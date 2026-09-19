@@ -1,7 +1,16 @@
-// รายชื่ออีเมลสิทธิ์ VIP (เข้าถึงแพ็กเกจ VIP ฟรี)
+// รายชื่ออีเมลสิทธิ์ VIP (รับสิทธิ์ฟรีทุกแพ็กเกจ)
 const VIP_EMAILS = [
     'oop280712@gmail.com',
     'sawat2823@gmail.com'
+];
+
+// รายการแพ็กเกจสเปกต่าง ๆ
+const PACKAGES = [
+    { id: 1, cpu: '1 CPU Core', ram: '15 GB RAM', price: '99 บาท/เดือน' },
+    { id: 2, cpu: '8 CPU Core', ram: '32 GB RAM', price: '299 บาท/เดือน' },
+    { id: 3, cpu: '32 CPU Core', ram: '128 GB RAM', price: '899 บาท/เดือน' },
+    { id: 4, cpu: '64 CPU Core', ram: '256 GB RAM', price: '1,599 บาท/เดือน' },
+    { id: 5, cpu: '120 CPU Core', ram: '500 GB RAM', price: '2,999 บาท/เดือน' }
 ];
 
 let currentUser = null;
@@ -26,7 +35,7 @@ function goToLogin() {
     document.getElementById('loginCard').style.display = 'block';
 }
 
-// 3. เข้าสู่ระบบและประเมินผลแพ็กเกจ
+// 3. ระบบเข้าสู่ระบบ -> แสดงหน้าเลือกแพ็กเกจ
 function loginUser(event) {
     event.preventDefault();
     const email = document.getElementById('loginEmail').value.trim().toLowerCase();
@@ -50,35 +59,51 @@ function loginUser(event) {
     document.getElementById('loginCard').style.display = 'none';
     document.getElementById('packageCard').style.display = 'block';
 
-    const pkgBtn = document.getElementById('pkgBtn');
-    const vipNoticeText = document.getElementById('vipNoticeText');
-
-    // ประเมินผลสิทธิ์ VIP สำหรับแพ็กเกจ
-    if (VIP_EMAILS.includes(email)) {
-        vipNoticeText.style.display = 'block';
-        pkgBtn.innerText = '🎁 กดรับสิทธิ์ VIP เข้าใช้งานฟรี';
-        pkgBtn.style.backgroundColor = '#16a34a'; // ปุ่มสีเขียวสำหรับ VIP
-    } else {
-        vipNoticeText.style.display = 'none';
-        pkgBtn.innerText = '💳 ชำระเงินเพื่อเปิดใช้งาน';
-        pkgBtn.style.backgroundColor = '#2563eb';
-    }
+    // โหลดบัตรแพ็กเกจตามสิทธิ์ของผู้ใช้
+    renderPackages(email);
 }
 
-// 4. ปุ่มเลือกแพ็กเกจ
-function selectPackage() {
-    if (!currentUser) return;
+// 4. แสดงบัตรแพ็กเกจ (แยกปุ่มระหว่าง คนทั่วไป กับ VIP)
+function renderPackages(email) {
+    const isVip = VIP_EMAILS.includes(email);
+    const packageListContainer = document.getElementById('packageList');
+    packageListContainer.innerHTML = '';
 
-    if (VIP_EMAILS.includes(currentUser.email)) {
-        alert('🌟 ยินดีต้อนรับสิทธิ์ VIP! เข้าสู่ระบบ Cloud Phone เรียบร้อยแล้ว');
+    PACKAGES.forEach(pkg => {
+        const card = document.createElement('div');
+        card.style.cssText = 'background: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #38bdf8; text-align: left; display: flex; justify-content: space-between; align-items: center;';
+
+        const info = `
+            <div>
+                <h4 style="color: #38bdf8; font-size: 16px;">⚡ ${pkg.cpu} / ${pkg.ram}</h4>
+                <p style="color: #cbd5e1; font-size: 13px; margin-top: 4px;">ราคา: ${isVip ? '<b style="color:#4ade80;">ฟรี (สิทธิ์ VIP)</b>' : pkg.price}</p>
+            </div>
+        `;
+
+        let actionBtn = '';
+        if (isVip) {
+            actionBtn = `<button class="btn-blue" style="width: auto; padding: 8px 15px; background-color: #16a34a;" onclick="selectPackage('${pkg.cpu}', true)">🎁 เลือกใช้งานฟรี</button>`;
+        } else {
+            actionBtn = `<button class="btn-blue" style="width: auto; padding: 8px 15px;" onclick="selectPackage('${pkg.cpu}', false)">💳 ชำระเงิน</button>`;
+        }
+
+        card.innerHTML = info + actionBtn;
+        packageListContainer.appendChild(card);
+    });
+}
+
+// 5. กดเลือกแพ็กเกจ
+function selectPackage(cpuSpec, isVip) {
+    if (isVip) {
+        alert(`🌟 อนุมัติสิทธิ์ VIP! เริ่มต้นใช้งานแพ็กเกจ ${cpuSpec}`);
         document.getElementById('packageCard').style.display = 'none';
-        startCloudInstance(currentUser.username + " (VIP Plan)");
+        startCloudInstance(`${currentUser.username} (${cpuSpec})`);
     } else {
-        alert('🔒 กรุณาชำระเงินเพื่อซื้อแพ็กเกจ VIP ก่อนเข้าใช้งาน');
+        alert(`🔒 ระบบชำระเงิน: คุณเลือกแพ็กเกจ ${cpuSpec} กรุณาทำการชำระเงินเพื่อเปิดใช้งาน`);
     }
 }
 
-// 5. เปิดหน้าจอ Cloud Phone
+// 6. เปิดหน้าจอ Cloud Phone
 function startCloudInstance(displayName) {
     document.getElementById('dashboard').style.display = 'block';
     document.getElementById('welcomeUser').innerText = displayName;
