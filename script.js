@@ -59,11 +59,10 @@ function loginUser(event) {
     document.getElementById('loginCard').style.display = 'none';
     document.getElementById('packageCard').style.display = 'block';
 
-    // โหลดบัตรแพ็กเกจตามสิทธิ์ของผู้ใช้
     renderPackages(email);
 }
 
-// 4. แสดงบัตรแพ็กเกจ (แยกปุ่มระหว่าง คนทั่วไป กับ VIP)
+// 4. แสดงบัตรแพ็กเกจ
 function renderPackages(email) {
     const isVip = VIP_EMAILS.includes(email);
     const packageListContainer = document.getElementById('packageList');
@@ -92,19 +91,42 @@ function renderPackages(email) {
     });
 }
 
-// 5. กดเลือกแพ็กเกจ
+// 5. กดเลือกแพ็กเกจ -> สั่งเปิดหน้าจอคลาวด์แบบโหมดความเร็วสูง (Instant Boot)
 function selectPackage(cpuSpec, isVip) {
     if (isVip) {
-        alert(`🌟 อนุมัติสิทธิ์ VIP! เริ่มต้นใช้งานแพ็กเกจ ${cpuSpec}`);
         document.getElementById('packageCard').style.display = 'none';
-        startCloudInstance(`${currentUser.username} (${cpuSpec})`);
+        startCloudInstanceFast(`${currentUser.username} (${cpuSpec})`);
     } else {
         alert(`🔒 ระบบชำระเงิน: คุณเลือกแพ็กเกจ ${cpuSpec} กรุณาทำการชำระเงินเพื่อเปิดใช้งาน`);
     }
 }
 
-// 6. เปิดหน้าจอ Cloud Phone
-function startCloudInstance(displayName) {
+// 6. ฟังก์ชันเปิดหน้าจอ Cloud Phone แบบขึ้นเร็วทันที (Instant Load)
+function startCloudInstanceFast(displayName) {
     document.getElementById('dashboard').style.display = 'block';
     document.getElementById('welcomeUser').innerText = displayName;
+
+    // สั่งวาดหน้าจอ Android UI แบบโต้ตอบได้ขึ้นทันทีโดยไม่ต้องรอนาน
+    const screenContent = document.querySelector('.screen-content');
+    screenContent.innerHTML = `
+        <div class="android-desktop">
+            <div class="status-bar">
+                <span>12:00</span>
+                <span>📶 100% 🔋</span>
+            </div>
+            <div class="app-grid">
+                <div class="app-icon" onclick="alert('เปิด Play Store')">🛍️<span>Play Store</span></div>
+                <div class="app-icon" onclick="alert('เปิด Chrome')">🌐<span>Browser</span></div>
+                <div class="app-icon" onclick="alert('เปิด Settings')">⚙️<span>Settings</span></div>
+                <div class="app-icon" onclick="alert('เปิด Files')">📁<span>Files</span></div>
+                <div class="app-icon" onclick="alert('เปิด TikTok')">🎵<span>TikTok</span></div>
+                <div class="app-icon" onclick="alert('เปิด Game')">🎮<span>Games</span></div>
+            </div>
+            <div class="nav-bar">
+                <span>◀</span>
+                <span>●</span>
+                <span>◼</span>
+            </div>
+        </div>
+    `;
 }
