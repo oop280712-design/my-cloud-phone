@@ -1,1 +1,118 @@
+/* ตั้งค่าพื้นฐาน */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
+body {
+    background-color: #0f172a; /* สีพื้นหลังโทนเข้ม */
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* แถบด้านบน (Header / Navigation) */
+header {
+    width: 100%;
+    background-color: #1e293b;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #2563eb;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #3b82f6;
+}
+
+.logo span {
+    color: #ffffff;
+}
+
+/* กล่องการ์ด (Card) สำหรับ สมัครสมาชิก / ล็อกอิน */
+.card {
+    background-color: #1e293b;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    width: 90%;
+    max-width: 400px;
+    margin: 30px auto;
+    border: 1px solid #334155;
+}
+
+.card h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #38bdf8;
+}
+
+/* ช่องกรอกข้อมูล (Input) */
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #cbd5e1;
+    font-size: 14px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #475569;
+    background-color: #0f172a;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+/* ปุ่มกดธีม BlueFinger */
+.btn-blue {
+    width: 100%;
+    padding: 12px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.btn-blue:hover {
+    background-color: #1d4ed8;
+}
+
+/* หน้าจอจำลองมือถือ Cloud Phone */
+#screen-container {
+    width: 320px;
+    height: 580px;
+    background-color: #000000;
+    border: 4px solid #3b82f6;
+    border-radius: 20px;
+    margin: 20px auto;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+}
+
+.phone-header {
+    background-color: #1e293b;
+    padding: 10px;
+    font-size: 12px;
+    color: #38bdf8;
+    text-align: center;
+}
