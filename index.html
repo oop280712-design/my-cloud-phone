@@ -1,1 +1,230 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlueFinger - Cloud Android Emulator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
+        body {
+            background-color: #0f172a;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Navigation Bar Theme BlueFinger */
+        header {
+            width: 100%;
+            background-color: #1e293b;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #2563eb;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3b82f6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo span {
+            color: #ffffff;
+        }
+
+        /* Container หลัก */
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .hero-subtitle {
+            color: #94a3b8;
+            margin-bottom: 30px;
+        }
+
+        /* กล่องเข้าสู่ระบบ / เช่าเครื่อง */
+        .card {
+            background-color: #1e293b;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            max-width: 450px;
+            margin: 0 auto 30px auto;
+            border: 1px solid #334155;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #475569;
+            background-color: #0f172a;
+            color: white;
+            font-size: 16px;
+        }
+
+        .btn-blue {
+            width: 100%;
+            padding: 14px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-blue:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* หน้าจอแสดงผล Cloud Phone (Screen Display) */
+        #screen-container {
+            display: none;
+            width: 100%;
+            max-width: 360px;
+            height: 640px;
+            background-color: #000;
+            border: 4px solid #3b82f6;
+            border-radius: 16px;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phone-header {
+            background-color: #1e293b;
+            padding: 8px;
+            font-size: 12px;
+            color: #38bdf8;
+        }
+
+        .status-msg {
+            margin-top: 15px;
+            font-size: 14px;
+            padding: 10px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .status-success {
+            background-color: #15803d;
+            color: white;
+        }
+
+        .status-error {
+            background-color: #b91c1c;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            📱 Blue<span>Finger</span>
+        </div>
+        <div>24/7 Cloud Android</div>
+    </header>
+
+    <div class="container">
+        <h1 class="hero-title">BlueFinger Cloud Phone</h1>
+        <p class="hero-subtitle">รันระบบ Android บนคลาวด์ตลอด 24 ชั่วโมง ควบคุมผ่านเว็บเบราว์เซอร์</p>
+
+        <!-- กล่องล็อกอินและเช่าเครื่อง -->
+        <div class="card" id="login-card">
+            <h2 style="margin-bottom: 20px;">เข้าสู่ระบบเช่าใช้งาน</h2>
+            <div class="input-group">
+                <label>อีเมลผู้ใช้งาน (Google Email):</label>
+                <input type="email" id="userEmail" placeholder="example@gmail.com" required>
+            </div>
+            <button class="btn-blue" onclick="startCloudPhone()">เริ่มใช้งาน BlueFinger</button>
+            <div id="statusBox" class="status-msg"></div>
+        </div>
+
+        <!-- จอจำลองแสดงภาพ Cloud Phone -->
+        <div id="screen-container">
+            <div class="phone-header">BlueFinger Cloud Instance #1 (Connected)</div>
+            <div style="display: flex; justify-content: center; align-items: center; height: 90%; color: #64748b;">
+                <p>📲 กำลังเชื่อมต่อหน้าจอ Android...<br>(สตรีมสัญญาณผ่าน WebRTC)</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // รายชื่อบัญชีที่ได้รับสิทธิ์เช่าฟรี VIP
+        const vipAccounts = [
+            'oop280712@gmail.com',
+            'sawat2823@gmail.com'
+        ];
+
+        function startCloudPhone() {
+            const emailInput = document.getElementById('userEmail').value.trim().toLowerCase();
+            const statusBox = document.getElementById('statusBox');
+            const screenContainer = document.getElementById('screen-container');
+
+            if (!emailInput) {
+                showStatus('กรุณากรอกอีเมลก่อนใช้งาน', 'error');
+                return;
+            }
+
+            // ตรวจสอบสิทธิ์
+            if (vipAccounts.includes(emailInput)) {
+                showStatus('✅ ยินดีต้อนรับสิทธิ์ VIP! อนุมัติการใช้งานฟรีเรียบร้อยแล้ว กำลังสตาร์ตเครื่อง...', 'success');
+                
+                // จำลองเปิดจอ Cloud Phone
+                setTimeout(() => {
+                    document.getElementById('login-card').style.display = 'none';
+                    screenContainer.style.display = 'block';
+                }, 2000);
+
+            } else {
+                showStatus('❌ บัญชีนี้ต้องชำระเงินก่อนใช้งาน (สิทธิ์ฟรีเฉพาะสมาชิกระดับ VIP)', 'error');
+            }
+        }
+
+        function showStatus(msg, type) {
+            const statusBox = document.getElementById('statusBox');
+            statusBox.innerText = msg;
+            statusBox.style.display = 'block';
+            statusBox.className = 'status-msg ' + (type === 'success' ? 'status-success' : 'status-error');
+        }
+    </script>
+</body>
+  </html>
+  
