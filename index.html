@@ -59,16 +59,12 @@
         </div>
 
         <!-- 4. หน้าเลือกแพ็กเกจ (Package Selection) -->
-        <div class="card" id="packageCard" style="display: none;">
-            <h2>เลือกแพ็กเกจใช้งาน</h2>
+        <div class="card" id="packageCard" style="display: none; max-width: 600px;">
+            <h2>เลือกแพ็กเกจ Cloud Phone</h2>
+            <p style="color: #cbd5e1; font-size: 14px; margin-bottom: 20px;">เลือกสเปกเครื่องที่เหมาะสมกับการใช้งานของคุณ</p>
             
-            <div style="background: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #3b82f6; margin-bottom: 15px;">
-                <h3 style="color: #38bdf8;">👑 VIP Cloud Phone Plan</h3>
-                <p style="font-size: 14px; color: #cbd5e1; margin: 8px 0;">สเปกแรง รัน 24 ชั่วโมง ไม่มีสะดุด</p>
-                <div id="vipNoticeText" style="font-size: 13px; color: #4ade80; margin-bottom: 10px; display: none;">
-                    ✨ สิทธิ์ VIP: คุณได้รับการปลดล็อกแพ็กเกจนี้ฟรี!
-                </div>
-                <button id="pkgBtn" class="btn-blue" onclick="selectPackage()">เข้าใช้งานแพ็กเกจ</button>
+            <div id="packageList" style="display: flex; flex-direction: column; gap: 15px;">
+                <!-- รายการแพ็กเกจจะถูกสร้างด้วย JavaScript อัตโนมัติ -->
             </div>
         </div>
 
