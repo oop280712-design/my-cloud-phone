@@ -1,38 +1,54 @@
-name: Deploy BlueFinger Platform
+name: Deploy Real Redroid Cloud Phone
 
 on:
   push:
-    branches:
-      - main
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+    branches: [ "main" ]
+  workflow_dispatch: # ปุ่มกดสั่งรันเองจากหน้า GitHub Actions
 
 jobs:
-  deploy-pages:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+  deploy-redroid:
+    runs-on: self-hosted # แนะนำให้รันบน Self-hosted Runner (Server/VPS ของคุณเองที่มี KVM)
+
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
+      - name: Enable Required Kernel Modules
+        run: |
+          sudo modprobe binder_linux devices="binder,hwbinder,vndbinder"
+          sudo modprobe ashmem_linux || true
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
+      - name: Stop Old Container
+        run: |
+          docker stop redroid-pixel7 || true
+          docker rm redroid-pixel7 || true
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Run Redroid with Real Device Spoofing
+        run: |
+          docker run -d \
+            --name redroid-pixel7 \
+            --privileged \
+            --pull always \
+            -v /data/redroid:/data \
+            -p 5555:5555 \
+            redroid/redroid:11.0.0-latest \
+            androidboot.redroid_width=1080 \
+            androidboot.redroid_height=2400 \
+            androidboot.redroid_fps=60 \
+            androidboot.redroid_dpi=420 \
+            androidboot.hardware=cheetah \
+            ro.product.model="Pixel 7 Pro" \
+            ro.product.brand="google" \
+            ro.product.name="cheetah" \
+            ro.product.device="cheetah" \
+            ro.product.manufacturer="Google" \
+            ro.build.fingerprint="google/cheetah/cheetah:13/TQ3A.230901.001/10750789:user/release-keys" \
+            ro.build.version.release=13 \
+            ro.build.version.sdk=33 \
+            ro.kernel.qemu=0 \
+            ro.boot.hardware=cheetah
+
+      - name: Check Status
+        run: |
+          sleep 10
+          docker ps | grep redroid-pixel7
