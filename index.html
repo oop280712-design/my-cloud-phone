@@ -15,8 +15,18 @@
 
     <div class="container">
         
-        <!-- 1. หน้าสมัครสมาชิก -->
-        <div class="card" id="registerCard">
+        <!-- 1. หน้าแรก: มีให้เลือก 2 ทาง (เข้าสู่ระบบ / สมัครสมาชิก) -->
+        <div class="card" id="welcomeCard">
+            <h2>ยินดีต้อนรับสู่ BlueFinger</h2>
+            <p style="color: #94a3b8; font-size: 14px; margin-bottom: 25px;">บริการ Cloud Android Emulator ตลอด 24 ชั่วโมง</p>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <button class="btn-blue" onclick="showAuthPage('login')">🔑 เข้าสู่ระบบ</button>
+                <button class="btn-outline" onclick="showAuthPage('register')">📝 สมัครสมาชิก</button>
+            </div>
+        </div>
+
+        <!-- 2. หน้าสมัครสมาชิก -->
+        <div class="card" id="registerCard" style="display: none;">
             <h2>สมัครสมาชิก BlueFinger</h2>
             <form onsubmit="registerUser(event)">
                 <div class="input-group">
@@ -31,15 +41,9 @@
                     <label>รหัสผ่าน (Password):</label>
                     <input type="password" id="regPassword" placeholder="ตั้งรหัสผ่าน" required>
                 </div>
-                <button type="submit" class="btn-blue">สมัครสมาชิก</button>
+                <button type="submit" class="btn-blue">ยืนยันการสมัครสมาชิก</button>
+                <button type="button" class="btn-text" onclick="showAuthPage('welcome')">◀ ย้อนกลับ</button>
             </form>
-        </div>
-
-        <!-- 2. หน้าแจ้งเตือนสมัครสำเร็จ -->
-        <div class="card" id="successCard" style="display: none;">
-            <h2 style="color: #4ade80;">🎉 สมัครสมาชิกสำเร็จ!</h2>
-            <p style="margin: 15px 0; color: #cbd5e1;">บัญชีของคุณถูกสร้างเรียบร้อยแล้ว กดปุ่มด้านล่างเพื่อเข้าสู่ระบบ</p>
-            <button class="btn-blue" onclick="goToLogin()">ไปหน้าเข้าสู่ระบบ</button>
         </div>
 
         <!-- 3. หน้าเข้าสู่ระบบ -->
@@ -55,6 +59,7 @@
                     <input type="password" id="loginPassword" placeholder="กรอกรหัสผ่าน" required>
                 </div>
                 <button type="submit" class="btn-blue">เข้าสู่ระบบ</button>
+                <button type="button" class="btn-text" onclick="showAuthPage('welcome')">◀ ย้อนกลับ</button>
             </form>
         </div>
 
@@ -68,7 +73,7 @@
         <!-- 5. หน้า Dashboard คลาวด์โฟนสไตล์ RedFinger -->
         <div id="cloudDashboard" style="display: none;">
             <div class="redfinger-layout">
-                <!-- แถบเครื่องมือควบคุมด้านข้าง (Side Toolbar) -->
+                <!-- แถบเครื่องมือควบคุมด้านข้าง -->
                 <div class="side-toolbar">
                     <button class="tool-btn" title="Home" onclick="goHome()">🏠</button>
                     <button class="tool-btn" title="Back" onclick="appBack()">◀</button>
@@ -79,7 +84,7 @@
                     <button class="tool-btn" title="Settings" onclick="openDeviceSettings()">⚙️</button>
                 </div>
 
-                <!-- พื้นที่แสดงผลหน้าจอโทรศัพท์ (Device Display Window) -->
+                <!-- พื้นที่แสดงผลหน้าจอโทรศัพท์ -->
                 <div class="phone-container">
                     <div class="device-header">
                         <span id="deviceTitle">Cloud Instance #1</span>
