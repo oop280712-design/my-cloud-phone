@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlueFinger - Cloud Android Emulator</title>
+    <title>BlueFinger - Cloud Phone Platform</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header>
+    <header class="main-header">
         <div class="logo">📱 Blue<span>Finger</span></div>
-        <div>24/7 Cloud Android</div>
+        <div id="userAccountInfo">Guest</div>
     </header>
 
     <div class="container">
@@ -58,23 +58,46 @@
             </form>
         </div>
 
-        <!-- 4. หน้าเลือกแพ็กเกจ (Package Selection) -->
+        <!-- 4. หน้าเลือกแพ็กเกจ -->
         <div class="card" id="packageCard" style="display: none; max-width: 600px;">
             <h2>เลือกแพ็กเกจ Cloud Phone</h2>
             <p style="color: #cbd5e1; font-size: 14px; margin-bottom: 20px;">เลือกสเปกเครื่องที่เหมาะสมกับการใช้งานของคุณ</p>
-            
-            <div id="packageList" style="display: flex; flex-direction: column; gap: 15px;">
-                <!-- รายการแพ็กเกจจะถูกสร้างด้วย JavaScript อัตโนมัติ -->
-            </div>
+            <div id="packageList" style="display: flex; flex-direction: column; gap: 15px;"></div>
         </div>
 
-        <!-- 5. หน้าคอนโซลจอ Cloud Phone -->
-        <div id="dashboard" style="display: none;">
-            <h3>ยินดีต้อนรับคุณ <span id="welcomeUser" style="color: #38bdf8;"></span></h3>
-            <div id="screen-container">
-                <div class="phone-header">BlueFinger Cloud Instance #1 (Connected)</div>
-                <div class="screen-content">
-                    <p>📲 กำลังเชื่อมต่อสัญญาณภาพ Android...<br><small>(WebRTC Stream)</small></p>
+        <!-- 5. หน้า Dashboard คลาวด์โฟนสไตล์ RedFinger -->
+        <div id="cloudDashboard" style="display: none;">
+            <div class="redfinger-layout">
+                <!-- แถบเครื่องมือควบคุมด้านข้าง (Side Toolbar) -->
+                <div class="side-toolbar">
+                    <button class="tool-btn" title="Home" onclick="goHome()">🏠</button>
+                    <button class="tool-btn" title="Back" onclick="appBack()">◀</button>
+                    <button class="tool-btn" title="Tasks" onclick="showRecents()">◼</button>
+                    <hr class="divider">
+                    <label for="apkInput" class="tool-btn" title="Install APK">📥<input type="file" id="apkInput" accept=".apk" style="display: none;" onchange="installApk(event)"></label>
+                    <button class="tool-btn" title="Restart Instance" onclick="restartDevice()">🔄</button>
+                    <button class="tool-btn" title="Settings" onclick="openDeviceSettings()">⚙️</button>
+                </div>
+
+                <!-- พื้นที่แสดงผลหน้าจอโทรศัพท์ (Device Display Window) -->
+                <div class="phone-container">
+                    <div class="device-header">
+                        <span id="deviceTitle">Cloud Instance #1</span>
+                        <span id="deviceStatus" class="status-online">● Running</span>
+                    </div>
+
+                    <div class="phone-screen">
+                        <!-- แถบ Status Bar ของ Android -->
+                        <div class="android-status-bar">
+                            <span id="clockDisplay">12:00</span>
+                            <span>📶 5G &nbsp; 🔋 100%</span>
+                        </div>
+
+                        <!-- พื้นที่ในหน้าจอแอปพลิเคชัน -->
+                        <div id="appDisplay" class="screen-viewport">
+                            <!-- แสดงไอคอนแอปภายใน -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
