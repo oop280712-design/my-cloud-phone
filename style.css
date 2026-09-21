@@ -5,7 +5,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Kanit', sans-serif; /* ใช้ฟอนต์ Kanit เพื่อรองรับภาษาไทยสวยงาม */
+    font-family: 'Kanit', sans-serif;
 }
 
 body {
@@ -16,8 +16,12 @@ body {
     flex-direction: column;
 }
 
+.hidden {
+    display: none !important;
+}
+
 /* ==========================================================================
-   2. แถบหัวข้อด้านบน (Main Header & Top Navigation)
+   2. แถบหัวข้อด้านบน (Main Header)
    ========================================================================== */
 .main-header {
     background: rgba(17, 24, 39, 0.8);
@@ -43,7 +47,6 @@ body {
     text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
 }
 
-/* แสดงสถานะผู้ใช้งาน เช่น VIP / บัญชีที่ล็อกอิน */
 .user-badge {
     background: rgba(56, 189, 248, 0.1);
     color: #38bdf8;
@@ -51,11 +54,10 @@ body {
     padding: 6px 16px;
     border-radius: 20px;
     font-size: 14px;
-    font-weight: 400;
 }
 
 /* ==========================================================================
-   3. เลย์เอาต์หลักและการ์ดแสดงเนื้อหา (Layout & Card Components)
+   3. เลย์เอาต์หลักและการ์ด (Layout & Cards)
    ========================================================================== */
 .container {
     padding: 40px 20px;
@@ -65,7 +67,6 @@ body {
     flex: 1;
 }
 
-/* กล่องการ์ดทั่วไป (เช่น หน้าเข้าสู่ระบบ / หน้าซื้อ VIP) */
 .card {
     background: rgba(30, 41, 59, 0.7);
     backdrop-filter: blur(16px);
@@ -76,12 +77,10 @@ body {
     width: 100%;
     max-width: 420px;
     text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* การ์ดแบบกว้างพิเศษสำหรับเนื้อหาขนาดใหญ่ */
 .wide-card {
-    max-width: 650px;
+    max-width: 680px;
 }
 
 .card-icon {
@@ -103,47 +102,8 @@ body {
 }
 
 /* ==========================================================================
-   4. ฟอร์มและช่องป้อนข้อมูล (Forms & Inputs)
+   4. ปุ่มกดและแพ็กเกจ (Buttons & Package List)
    ========================================================================== */
-.input-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.input-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 13px;
-    color: #cbd5e1;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 12px 16px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    background: rgba(15, 23, 42, 0.8);
-    color: #fff;
-    font-size: 14px;
-    outline: none;
-    transition: all 0.2s ease;
-}
-
-.input-group input:focus {
-    border-color: #38bdf8;
-    box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
-}
-
-/* ==========================================================================
-   5. ปุ่มกดสไตล์ต่างๆ (Buttons)
-   ========================================================================== */
-.button-group {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-
-/* ปุ่มหลักสีฟ้าไล่ระดับ */
 .btn-blue {
     width: 100%;
     padding: 14px;
@@ -163,50 +123,29 @@ body {
     box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
 }
 
-/* ปุ่มแบบเส้นขอบเรืองแสง */
-.btn-outline {
-    width: 100%;
-    padding: 14px;
+.btn-outline-small {
+    padding: 8px 16px;
     background: transparent;
     border: 1px solid #38bdf8;
-    border-radius: 10px;
+    border-radius: 8px;
     color: #38bdf8;
-    font-size: 15px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.2s;
 }
 
-.btn-outline:hover {
+.btn-outline-small:hover {
     background: rgba(56, 189, 248, 0.1);
-    transform: translateY(-2px);
 }
 
-/* ปุ่มตัวหนังสือทั่วไป */
-.btn-text {
-    background: none;
-    border: none;
-    color: #94a3b8;
-    margin-top: 18px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: color 0.2s;
-}
-
-.btn-text:hover {
-    color: #fff;
-}
-
-/* ==========================================================================
-   6. ตารางแพ็กเกจ VIP และตัวเลือกบัญชี (VIP Packages & Multiple Accounts)
-   ========================================================================== */
 .package-grid {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    text-align: left;
 }
 
-/* การ์ดเลือกระดับ VIP (รองรับระบบ VIP หลายบัญชี) */
 .package-card {
     background: rgba(15, 23, 42, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -217,11 +156,6 @@ body {
     align-items: center;
     cursor: pointer;
     transition: all 0.2s ease;
-}
-
-.package-card:hover {
-    border-color: #38bdf8;
-    background: rgba(56, 189, 248, 0.05);
 }
 
 .package-card.active {
@@ -241,7 +175,61 @@ body {
 }
 
 /* ==========================================================================
-   7. โครงสร้างกรอบจำลองมือถือ RedFinger (RedFinger Emulator Layout)
+   5. หน้าจัดการรายการคลาวด์โฟน (Cloud List Dashboard)
+   ========================================================================== */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cloud-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.cloud-item-card {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: all 0.2s ease;
+}
+
+.cloud-item-card:hover {
+    border-color: #38bdf8;
+    transform: translateY(-3px);
+}
+
+.cloud-info-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cloud-status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #4ade80;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+/* ==========================================================================
+   6. โครงสร้างจำลองมือถือ RedFinger / Redroid Container
    ========================================================================== */
 .redfinger-layout {
     display: flex;
@@ -253,7 +241,6 @@ body {
     box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
 }
 
-/* แถบเครื่องมือควบคุมด้านข้าง (Side Control Toolbar) */
 .side-toolbar {
     display: flex;
     flex-direction: column;
@@ -282,7 +269,6 @@ body {
 .tool-btn:hover {
     background: #2563eb;
     transform: scale(1.05);
-    box-shadow: 0 0 12px rgba(37, 99, 235, 0.5);
 }
 
 .divider {
@@ -291,7 +277,6 @@ body {
     margin: 4px 0;
 }
 
-/* ตัวเครื่องมือถือจำลอง (Phone Frame) */
 .phone-container {
     display: flex;
     flex-direction: column;
@@ -299,7 +284,6 @@ body {
     border-radius: 16px;
     overflow: hidden;
     border: 2px solid #374151;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
 }
 
 .device-header {
@@ -310,7 +294,6 @@ body {
     justify-content: space-between;
     align-items: center;
     color: #9ca3af;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .status-online {
@@ -318,7 +301,6 @@ body {
     font-weight: 600;
 }
 
-/* พื้นที่หน้าจอ Android (Phone Screen Output) */
 .phone-screen {
     width: 340px;
     height: 600px;
@@ -341,12 +323,8 @@ body {
 .screen-viewport {
     flex: 1;
     overflow-y: auto;
-    position: relative;
 }
 
-/* ==========================================================================
-   8. หน้าแอปพลิเคชันและหน้าต่างแสดงผลภายในมือถือ (Apps & Windows)
-   ========================================================================== */
 .app-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -359,11 +337,6 @@ body {
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
-.app-item:hover {
-    transform: translateY(-4px);
 }
 
 .app-icon-box {
@@ -374,23 +347,10 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 24px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .app-title {
     font-size: 11px;
     margin-top: 6px;
     color: #e2e8f0;
-    text-align: center;
-}
-
-.app-window {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    box-sizing: border-box;
-    text-align: center;
 }
