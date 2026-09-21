@@ -8,7 +8,7 @@ on:
 jobs:
   deploy-redroid:
     name: Deploy & Run Redroid Container
-    runs-on: self-hosted # รันบน Self-hosted Runner (เครื่อง VPS/Server ของคุณเอง)
+    runs-on: self-hosted # รันบน Self-hosted Runner (เครื่อง VPS/Server ที่มี KVM)
 
     steps:
       - name: Checkout Code
