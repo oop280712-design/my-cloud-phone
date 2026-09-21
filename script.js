@@ -1,168 +1,172 @@
-// บัญชีที่มีสิทธิ์ VIP (เปิดใช้งานฟรี)
-const VIP_EMAILS = ['oop280712@gmail.com', 'sawat2823@gmail.com'];
+// ==========================================================================
+// BlueFinger Cloud Phone - Main Script (Complete All-in-One)
+// ==========================================================================
 
-// รายการแพ็กเกจสเปกต่าง ๆ
-const PACKAGES = [
-    { id: 1, cpu: '1 CPU Core', ram: '15 GB RAM', price: '99 บาท/เดือน' },
-    { id: 2, cpu: '8 CPU Core', ram: '32 GB RAM', price: '299 บาท/เดือน' },
-    { id: 3, cpu: '32 CPU Core', ram: '128 GB RAM', price: '899 บาท/เดือน' },
-    { id: 4, cpu: '64 CPU Core', ram: '256 GB RAM', price: '1,599 บาท/เดือน' },
-    { id: 5, cpu: '120 CPU Core', ram: '500 GB RAM', price: '2,999 บาท/เดือน' }
+// 1. รายชื่อผู้ได้รับสิทธิ์ VIP (VIP Whitelist)
+const vipUsers = [
+    "sawat2823@gmail.com",
+    "oop280712@gmail.com"
 ];
 
-let installedApps = [
-    { name: 'Play Store', icon: '🛍️', bg: '#0284c7' },
-    { name: 'Chrome', icon: '🌐', bg: '#ea580c' },
-    { name: 'Settings', icon: '⚙️', bg: '#475569' },
-    { name: 'TikTok', icon: '🎵', bg: '#000000' },
-    { name: 'YouTube', icon: '▶️', bg: '#dc2626' },
-    { name: 'Games', icon: '🎮', bg: '#16a34a' }
-];
+// กำหนดอีเมลผู้ใช้งานปัจจุบัน (สามารถสลับทดสอบบัญชีได้ที่นี่)
+let currentUserEmail = "sawat2823@gmail.com"; 
 
-let currentUser = null;
+let myCloudDevices = [];      // รายการ Cloud Phone ที่ผู้ใช้งานครอบครองอยู่
+let selectedDeviceCount = 1;  // จำนวนเครื่องที่เลือกจากแพ็กเกจ (ค่าเริ่มต้นคือ 1 เครื่อง)
 
-// สลับการแสดงผลระหว่าง หน้าแรกเลือกทาง / หน้าเข้าสู่ระบบ / หน้าสมัครสมาชิก
-function showAuthPage(page) {
-    document.getElementById('welcomeCard').style.display = 'none';
-    document.getElementById('loginCard').style.display = 'none';
-    document.getElementById('registerCard').style.display = 'none';
+// ฟังก์ชันตรวจสอบสิทธิ์ VIP
+function checkIsVip(email) {
+    return vipUsers.includes(email.trim().toLowerCase());
+}
 
-    if (page === 'login') {
-        document.getElementById('loginCard').style.display = 'block';
-    } else if (page === 'register') {
-        document.getElementById('registerCard').style.display = 'block';
-    } else {
-        document.getElementById('welcomeCard').style.display = 'block';
+// ==========================================================================
+// 2. ระบบเริ่มต้นทำงานเมื่อโหลดหน้าเว็บ (Initialize User Interface)
+// ==========================================================================
+document.addEventListener("DOMContentLoaded", () => {
+    updateUserBadge();
+});
+
+// ฟังก์ชันอัปเดตป้ายแสดงชื่อและสถานะ VIP บนแถบ Header ด้านบน
+function updateUserBadge() {
+    const userBadge = document.getElementById('userBadge');
+    const isVip = checkIsVip(currentUserEmail);
+
+    if (userBadge) {
+        if (isVip) {
+            userBadge.innerHTML = `👑 VIP User: ${currentUserEmail}`;
+            userBadge.style.borderColor = "#f59e0b";
+            userBadge.style.color = "#fbbf24";
+            userBadge.style.background = "rgba(245, 158, 11, 0.15)";
+        } else {
+            userBadge.innerHTML = `👤 User: ${currentUserEmail}`;
+            userBadge.style.borderColor = "rgba(56, 189, 248, 0.3)";
+            userBadge.style.color = "#38bdf8";
+            userBadge.style.background = "rgba(56, 189, 248, 0.1)";
+        }
     }
 }
 
-// 1. ระบบสมัครสมาชิก -> เมื่อสำเร็จจะไปหน้าเลือกแพ็กเกจทันที
-function registerUser(event) {
-    event.preventDefault();
-    const email = document.getElementById('regEmail').value.trim().toLowerCase();
-    const username = document.getElementById('regUsername').value.trim();
-    const password = document.getElementById('regPassword').value;
-
-    const userData = { email, username, password };
-    localStorage.setItem('user_' + email, JSON.stringify(userData));
-
-    currentUser = userData;
-    document.getElementById('userAccountInfo').innerText = username;
-    document.getElementById('registerCard').style.display = 'none';
-    document.getElementById('packageCard').style.display = 'block';
-
-    renderPackages(email);
+// ==========================================================================
+// 3. ฟังก์ชันเลือกแพ็กเกจคลาวด์โฟน
+// ==========================================================================
+function selectPackage(element, count) {
+    // เอาสไตล์ไฮไลต์ออกจากแพ็กเกจอื่นทั้งหมด
+    document.querySelectorAll('.package-card').forEach(card => card.classList.remove('active'));
+    
+    // ไฮไลต์แพ็กเกจที่คลิกเลือก
+    element.classList.add('active');
+    
+    // บันทึกจำนวนเครื่องที่เลือก
+    selectedDeviceCount = count;
 }
 
-// 2. ระบบเข้าสู่ระบบ -> เมื่อสำเร็จจะไปหน้าเลือกแพ็กเกจ
-function loginUser(event) {
-    event.preventDefault();
-    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-    const password = document.getElementById('loginPassword').value;
+// ==========================================================================
+// 4. ฟังก์ชันยืนยันการรับสิทธิ์ / กดซื้อแพ็กเกจ
+// ==========================================================================
+function confirmPurchase() {
+    const isVip = checkIsVip(currentUserEmail);
 
-    const savedData = localStorage.getItem('user_' + email);
-    if (!savedData) return alert('ไม่พบบัญชีนี้ในระบบ กรุณาสมัครสมาชิกก่อน');
+    // ตรวจสอบสิทธิ์ VIP
+    if (!isVip) {
+        alert("บัญชีของคุณยังไม่ได้เป็นสมาชิก VIP กรุณาสมัครสมาชิกก่อนใช้งาน Cloud Phone!");
+        return;
+    }
 
-    const user = JSON.parse(savedData);
-    if (user.password !== password) return alert('รหัสผ่านไม่ถูกต้อง');
+    // ล้างรายการเดิม และสร้างรายการเครื่องคลาวด์ใหม่ตามจำนวนแพ็กเกจที่เลือก
+    myCloudDevices = [];
+    for (let i = 1; i <= selectedDeviceCount; i++) {
+        myCloudDevices.push({
+            id: i,
+            name: `Pixel 7 Pro VIP #${i}`,
+            ip: `192.168.1.${100 + i}`,
+            port: 5555 + i - 1,
+            status: "Online",
+            isVipDevice: true
+        });
+    }
 
-    currentUser = user;
-    document.getElementById('userAccountInfo').innerText = user.username;
-    document.getElementById('loginCard').style.display = 'none';
-    document.getElementById('packageCard').style.display = 'block';
+    // อัปเดตรายการคลาวด์บนหน้าแดชบอร์ด
+    renderDashboard();
 
-    renderPackages(email);
+    // สลับหน้าจอ: ซ่อนหน้าเลือกแพ็กเกจ -> แสดงหน้าแดชบอร์ดรายการคลาวด์โฟน
+    document.getElementById('buySection').classList.add('hidden');
+    document.getElementById('dashboardSection').classList.remove('hidden');
 }
 
-// 3. แสดงรายการแพ็กเกจ (ตรวจสอบ VIP)
-function renderPackages(email) {
-    const isVip = VIP_EMAILS.includes(email);
-    const container = document.getElementById('packageList');
-    container.innerHTML = '';
+// ==========================================================================
+// 5. ฟังก์ชันสร้างและอัปเดตหน้าต่างแสดงรายการคลาวด์ (Cloud Dashboard View)
+// ==========================================================================
+function renderDashboard() {
+    const listContainer = document.getElementById('cloudList');
+    const countSpan = document.getElementById('cloudCount');
 
-    PACKAGES.forEach(pkg => {
-        const card = document.createElement('div');
-        card.style.cssText = 'background: rgba(15, 23, 42, 0.8); padding: 18px; border-radius: 12px; border: 1px solid rgba(56, 189, 248, 0.3); text-align: left; display: flex; justify-content: space-between; align-items: center;';
+    // อัปเดตตัวเลขแสดงจำนวนคลาวด์ที่มีอยู่ทั้งหมด
+    if (countSpan) {
+        countSpan.innerText = myCloudDevices.length;
+    }
 
-        const info = `<div><h4 style="color: #38bdf8; margin:0; font-size:16px;">⚡ ${pkg.cpu} / ${pkg.ram}</h4><p style="color: #cbd5e1; font-size: 13px; margin: 4px 0 0 0;">ราคา: ${isVip ? '<b style="color:#4ade80;">ฟรี (สิทธิ์ VIP)</b>' : pkg.price}</p></div>`;
-        const btn = isVip 
-            ? `<button class="btn-blue" style="width:auto; padding: 10px 18px; background:linear-gradient(135deg, #16a34a 0%, #15803d 100%);" onclick="selectPackage('${pkg.cpu}', true)">🎁 เลือกใช้งานฟรี</button>`
-            : `<button class="btn-blue" style="width:auto; padding: 10px 18px;" onclick="selectPackage('${pkg.cpu}', false)">💳 ชำระเงิน</button>`;
+    // ล้างการ์ดเดิมออกแล้วสร้างการ์ดคลาวด์โฟนใหม่ตามจำนวนเครื่องที่มี
+    if (listContainer) {
+        listContainer.innerHTML = '';
 
-        card.innerHTML = info + btn;
-        container.appendChild(card);
-    });
-}
-
-// 4. เลือกแพ็กเกจเพื่อเปิดเครื่อง
-function selectPackage(cpuSpec, isVip) {
-    if (isVip) {
-        document.getElementById('packageCard').style.display = 'none';
-        document.getElementById('cloudDashboard').style.display = 'block';
-        document.getElementById('deviceTitle').innerText = `${currentUser.username} - ${cpuSpec}`;
-        goHome();
-        startClock();
-    } else {
-        alert(`🔒 ระบบชำระเงิน: คุณเลือกแพ็กเกจ ${cpuSpec} กรุณาทำการชำระเงินเพื่อเปิดใช้งาน`);
+        myCloudDevices.forEach(device => {
+            const item = document.createElement('div');
+            item.className = 'cloud-item-card';
+            item.innerHTML = `
+                <div class="cloud-info-title">
+                    <span>📱 ${device.name} ${device.isVipDevice ? '<span class="vip-badge">VIP</span>' : ''}</span>
+                    <span style="font-size: 12px; color: #4ade80;">
+                        <span class="cloud-status-dot"></span>${device.status}
+                    </span>
+                </div>
+                <div style="font-size: 12px; color: #94a3b8;">
+                    <div>ADB Port: ${device.port}</div>
+                    <div>IP Address: ${device.ip}</div>
+                </div>
+                <button class="btn-blue" style="padding: 8px; font-size: 13px;" onclick="openEmulator('${device.name}')">
+                    เข้าควบคุมเครื่อง
+                </button>
+            `;
+            listContainer.appendChild(item);
+        });
     }
 }
 
-// 5. หน้าจอหลักของ RedFinger Cloud Phone
-function goHome() {
-    const screen = document.getElementById('appDisplay');
-    let html = '<div class="app-grid">';
-    
-    installedApps.forEach(app => {
-        html += `
-            <div class="app-item" onclick="openApp('${app.name}', '${app.icon}')">
-                <div class="app-icon-box" style="background: ${app.bg || '#1e293b'};">${app.icon}</div>
-                <div class="app-title">${app.name}</div>
-            </div>
-        `;
-    });
-    
-    html += '</div>';
-    screen.innerHTML = html;
+// ==========================================================================
+// 6. ฟังก์ชันเปิดหน้าจอควบคุมเครื่องคลาวด์เสมือน (Emulator Control Panel)
+// ==========================================================================
+function openEmulator(deviceName) {
+    // เปลี่ยนชื่อบนหัวข้อเครื่องที่เข้าควบคุม
+    const activeDeviceNameElem = document.getElementById('activeDeviceName');
+    if (activeDeviceNameElem) {
+        activeDeviceNameElem.innerText = deviceName;
+    }
+
+    // สลับหน้าจอ: ซ่อนหน้าแดชบอร์ด -> แสดงหน้าจอควบคุมมือถือ
+    document.getElementById('dashboardSection').classList.add('hidden');
+    document.getElementById('emulatorSection').classList.remove('hidden');
 }
 
-function openApp(appName, appIcon) {
-    const screen = document.getElementById('appDisplay');
-    screen.innerHTML = `
-        <div class="app-window">
-            <div style="font-size: 50px; margin-bottom: 10px;">${appIcon}</div>
-            <h3 style="color: #38bdf8; margin: 0 0 10px 0;">${appName}</h3>
-            <p style="color: #94a3b8; font-size: 12px;">กำลังรันแอปบน Android Container</p>
-        </div>
-    `;
+// ==========================================================================
+// 7. ฟังก์ชันปิดหน้าจอควบคุมเพื่อกลับไปยังหน้าแดชบอร์ดรายการคลาวด์
+// ==========================================================================
+function closeEmulator() {
+    // สลับหน้าจอ: ซ่อนหน้าควบคุมมือถือ -> แสดงหน้าแดชบอร์ด
+    document.getElementById('emulatorSection').classList.add('hidden');
+    document.getElementById('dashboardSection').classList.remove('hidden');
 }
 
-function installApk(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    let appName = file.name.replace('.apk', '');
-    if (appName.length > 8) appName = appName.substring(0, 8) + '...';
-
-    alert(`📦 กำลังติดตั้ง: ${file.name}`);
-
-    setTimeout(() => {
-        installedApps.push({ name: appName, icon: '📱', bg: '#0284c7' });
-        alert(`✅ ติดตั้ง ${appName} เรียบร้อยแล้ว`);
-        goHome();
-    }, 800);
+// ==========================================================================
+// 8. ฟังก์ชันกลับไปหน้าเลือกซื้อแพ็กเกจ (เพื่อเพิ่มเครื่องใหม่)
+// ==========================================================================
+function showBuySection() {
+    document.getElementById('dashboardSection').classList.add('hidden');
+    document.getElementById('buySection').classList.remove('hidden');
 }
 
-function appBack() { goHome(); }
-function showRecents() { alert('📑 แสดงรายการแอปที่เปิดค้างไว้'); }
-function restartDevice() {
-    alert('🔄 กำลังรีสตาร์ทเครื่อง Cloud Instance...');
-    goHome();
-}
-function openDeviceSettings() { openApp('Settings', '⚙️'); }
-
-function startClock() {
-    setInterval(() => {
-        const now = new Date();
-        document.getElementById('clockDisplay').innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    }, 1000);
+// ==========================================================================
+// 9. ฟังก์ชันส่งคำสั่งปุ่มควบคุม Android (Home, Back, Recent, Power)
+// ==========================================================================
+function sendKey(key) {
+    console.log(`Sending Key Event to redroid: ${key}`);
 }
