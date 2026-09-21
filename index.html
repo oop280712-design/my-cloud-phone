@@ -3,104 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlueFinger - Cloud Phone Platform</title>
+    <title>BlueFinger Cloud Phone</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
+    <!-- แถบหัวข้อด้านบน -->
     <header class="main-header">
-        <div class="logo">📱 Blue<span>Finger</span></div>
-        <div id="userAccountInfo">Guest</div>
+        <div class="logo">BLUE<span>FINGER</span></div>
+        <div class="user-badge" id="userBadge">VIP User: oop280712@gmail.com</div>
     </header>
 
     <div class="container">
-        
-        <!-- 1. หน้าแรก: มีให้เลือก 2 ทาง (เข้าสู่ระบบ / สมัครสมาชิก) -->
-        <div class="card" id="welcomeCard">
-            <h2>ยินดีต้อนรับสู่ BlueFinger</h2>
-            <p style="color: #94a3b8; font-size: 14px; margin-bottom: 25px;">บริการ Cloud Android Emulator ตลอด 24 ชั่วโมง</p>
-            <div style="display: flex; flex-direction: column; gap: 12px;">
-                <button class="btn-blue" onclick="showAuthPage('login')">🔑 เข้าสู่ระบบ</button>
-                <button class="btn-outline" onclick="showAuthPage('register')">📝 สมัครสมาชิก</button>
+
+        <!-- [หน้า 1]: ตัวเลือกซื้อแพ็กเกจ (Package Selection) -->
+        <div class="card wide-card" id="buySection">
+            <div class="card-icon">👑</div>
+            <h2>เลือกแพ็กเกจ VIP Cloud Phone</h2>
+            <p class="subtitle">สเปกสมจริง ปลอมแปลง Google Pixel 7 Pro ผ่านการตรวจจับ 100%</p>
+
+            <div class="package-grid">
+                <div class="package-card active" onclick="selectPackage(this, 1)">
+                    <div>
+                        <strong>Cloud Phone 1 เครื่อง <span class="vip-badge">VIP Free</span></strong>
+                        <p style="font-size: 12px; color: #94a3b8; margin-top: 4px;">Android 11 | 1080x2400 | Root + Play Integrity</p>
+                    </div>
+                    <span style="color: #38bdf8; font-weight: 600;">฿0 / เดือน</span>
+                </div>
+
+                <div class="package-card" onclick="selectPackage(this, 2)">
+                    <div>
+                        <strong>Cloud Phone 2 เครื่อง <span class="vip-badge">VIP Multi</span></strong>
+                        <p style="font-size: 12px; color: #94a3b8; margin-top: 4px;">เปิดได้พร้อมกัน 2 จอ | เหมาะสำหรับปล่อยฟาร์ม</p>
+                    </div>
+                    <span style="color: #38bdf8; font-weight: 600;">฿0 / เดือน</span>
+                </div>
+            </div>
+
+            <div class="button-group" style="margin-top: 24px;">
+                <button class="btn-blue" onclick="confirmPurchase()">ยืนยันการรับสิทธิ์ Cloud Phone</button>
             </div>
         </div>
 
-        <!-- 2. หน้าสมัครสมาชิก -->
-        <div class="card" id="registerCard" style="display: none;">
-            <h2>สมัครสมาชิก BlueFinger</h2>
-            <form onsubmit="registerUser(event)">
-                <div class="input-group">
-                    <label>อีเมล (Google Email):</label>
-                    <input type="email" id="regEmail" placeholder="example@gmail.com" required>
+        <!-- [หน้า 2]: แดชบอร์ดแสดงคลาวด์ที่คุณมี (Cloud List Dashboard) -->
+        <div class="card wide-card hidden" id="dashboardSection">
+            <div class="dashboard-header">
+                <div>
+                    <h2>แดชบอร์ด คลาวด์โฟนของคุณ</h2>
+                    <p class="subtitle" style="margin-bottom: 0;">คุณมีคลาวด์เปิดใช้งานอยู่ทั้งหมด <span id="cloudCount" style="color: #38bdf8; font-weight: 600;">0</span> เครื่อง</p>
                 </div>
-                <div class="input-group">
-                    <label>ชื่อผู้ใช้ (Username):</label>
-                    <input type="text" id="regUsername" placeholder="ตั้งชื่อผู้ใช้งาน" required>
-                </div>
-                <div class="input-group">
-                    <label>รหัสผ่าน (Password):</label>
-                    <input type="password" id="regPassword" placeholder="ตั้งรหัสผ่าน" required>
-                </div>
-                <button type="submit" class="btn-blue">ยืนยันการสมัครสมาชิก</button>
-                <button type="button" class="btn-text" onclick="showAuthPage('welcome')">◀ ย้อนกลับ</button>
-            </form>
+                <button class="btn-outline-small" onclick="showBuySection()">+ เพิ่มเครื่องใหม่</button>
+            </div>
+
+            <!-- รายการคลาวด์โฟนทั้งหมดของคุณ -->
+            <div class="cloud-list" id="cloudList">
+                <!-- รายการจะถูกสร้างผ่าน JavaScript -->
+            </div>
         </div>
 
-        <!-- 3. หน้าเข้าสู่ระบบ -->
-        <div class="card" id="loginCard" style="display: none;">
-            <h2>เข้าสู่ระบบ BlueFinger</h2>
-            <form onsubmit="loginUser(event)">
-                <div class="input-group">
-                    <label>อีเมล:</label>
-                    <input type="email" id="loginEmail" placeholder="example@gmail.com" required>
-                </div>
-                <div class="input-group">
-                    <label>รหัสผ่าน:</label>
-                    <input type="password" id="loginPassword" placeholder="กรอกรหัสผ่าน" required>
-                </div>
-                <button type="submit" class="btn-blue">เข้าสู่ระบบ</button>
-                <button type="button" class="btn-text" onclick="showAuthPage('welcome')">◀ ย้อนกลับ</button>
-            </form>
-        </div>
+        <!-- [หน้า 3]: หน้าต่างควบคุมเครื่องเสมือน (RedFinger / Redroid Control Panel) -->
+        <div class="redfinger-layout hidden" id="emulatorSection">
+            <!-- แถบเครื่องมือควบคุมด้านข้าง -->
+            <div class="side-toolbar">
+                <button class="tool-btn" title="กลับหน้าแดชบอร์ด" onclick="closeEmulator()">⬅️</button>
+                <div class="divider"></div>
+                <button class="tool-btn" title="Home" onclick="sendKey('HOME')">🏠</button>
+                <button class="tool-btn" title="Back" onclick="sendKey('BACK')">◀️</button>
+                <button class="tool-btn" title="Recent Apps" onclick="sendKey('APP_SWITCH')">🔳</button>
+                <div class="divider"></div>
+                <button class="tool-btn" title="Power" onclick="sendKey('POWER')">🔴</button>
+            </div>
 
-        <!-- 4. หน้าเลือกแพ็กเกจ -->
-        <div class="card" id="packageCard" style="display: none; max-width: 600px;">
-            <h2>เลือกแพ็กเกจ Cloud Phone</h2>
-            <p style="color: #cbd5e1; font-size: 14px; margin-bottom: 20px;">เลือกสเปกเครื่องที่เหมาะสมกับการใช้งานของคุณ</p>
-            <div id="packageList" style="display: flex; flex-direction: column; gap: 15px;"></div>
-        </div>
-
-        <!-- 5. หน้า Dashboard คลาวด์โฟนสไตล์ RedFinger -->
-        <div id="cloudDashboard" style="display: none;">
-            <div class="redfinger-layout">
-                <!-- แถบเครื่องมือควบคุมด้านข้าง -->
-                <div class="side-toolbar">
-                    <button class="tool-btn" title="Home" onclick="goHome()">🏠</button>
-                    <button class="tool-btn" title="Back" onclick="appBack()">◀</button>
-                    <button class="tool-btn" title="Tasks" onclick="showRecents()">◼</button>
-                    <hr class="divider">
-                    <label for="apkInput" class="tool-btn" title="Install APK">📥<input type="file" id="apkInput" accept=".apk" style="display: none;" onchange="installApk(event)"></label>
-                    <button class="tool-btn" title="Restart Instance" onclick="restartDevice()">🔄</button>
-                    <button class="tool-btn" title="Settings" onclick="openDeviceSettings()">⚙️</button>
+            <!-- ตัวเครื่องมือถือจำลอง -->
+            <div class="phone-container">
+                <div class="device-header">
+                    <span id="activeDeviceName">Pixel 7 Pro #1</span>
+                    <span class="status-online">● ONLINE</span>
                 </div>
 
-                <!-- พื้นที่แสดงผลหน้าจอโทรศัพท์ -->
-                <div class="phone-container">
-                    <div class="device-header">
-                        <span id="deviceTitle">Cloud Instance #1</span>
-                        <span id="deviceStatus" class="status-online">● Running</span>
+                <div class="phone-screen">
+                    <div class="android-status-bar">
+                        <span>12:00</span>
+                        <span>📶 100%</span>
                     </div>
 
-                    <div class="phone-screen">
-                        <!-- แถบ Status Bar ของ Android -->
-                        <div class="android-status-bar">
-                            <span id="clockDisplay">12:00</span>
-                            <span>📶 5G &nbsp; 🔋 100%</span>
-                        </div>
-
-                        <!-- พื้นที่ในหน้าจอแอปพลิเคชัน -->
-                        <div id="appDisplay" class="screen-viewport">
-                            <!-- แสดงไอคอนแอปภายใน -->
+                    <!-- พื้นที่สตรีมหน้าจอ redroid -->
+                    <div class="screen-viewport" id="screenViewport">
+                        <div class="app-grid">
+                            <div class="app-item">
+                                <div class="app-icon-box" style="background: #15803d;">🎮</div>
+                                <span class="app-title">Game Farm</span>
+                            </div>
+                            <div class="app-item">
+                                <div class="app-icon-box" style="background: #1e40af;">🏦</div>
+                                <span class="app-title">Bank App</span>
+                            </div>
+                            <div class="app-item">
+                                <div class="app-icon-box" style="background: #b91c1c;">🛡️</div>
+                                <span class="app-title">Magisk</span>
+                            </div>
+                            <div class="app-item">
+                                <div class="app-icon-box" style="background: #6b21a8;">📱</div>
+                                <span class="app-title">Settings</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -111,4 +117,5 @@
 
     <script src="script.js"></script>
 </body>
-</html>
+            </html>
+                                                            
