@@ -3,119 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlueFinger Cloud Phone</title>
+    <title>BlueFinger VIP Cloud Phone - High-End Virtual Phone</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen">
 
-    <!-- แถบหัวข้อด้านบน -->
-    <header class="main-header">
-        <div class="logo">BLUE<span>FINGER</span></div>
-        <div class="user-badge" id="userBadge">VIP User: oop280712@gmail.com</div>
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo-group">
+                <i class="fa-solid fa-mobile-screen-button logo-icon"></i>
+                <span class="logo-title">BlueFinger <span class="badge-vip-text">PRO VIP</span></span>
+            </div>
+            <div id="userBadge" class="user-badge">
+                <i class="fa-solid fa-circle-user"></i> Checking Auth...
+            </div>
+        </div>
     </header>
 
-    <div class="container">
-
-        <!-- [หน้า 1]: ตัวเลือกซื้อแพ็กเกจ (Package Selection) -->
-        <div class="card wide-card" id="buySection">
-            <div class="card-icon">👑</div>
-            <h2>เลือกแพ็กเกจ VIP Cloud Phone</h2>
-            <p class="subtitle">สเปกสมจริง ปลอมแปลง Google Pixel 7 Pro ผ่านการตรวจจับ 100%</p>
+    <main class="main-content">
+        <!-- Section 1: Buy Package Section -->
+        <section id="buySection" class="section-container">
+            <div class="text-center mb-8">
+                <h1 class="title-lg">เลือกแพ็กเกจ Cloud Phone (Redroid High-Perf)</h1>
+                <p class="subtitle">ระบบคลาวด์สมาร์ทโฟนประสิทธิภาพสูง จำลองฮาร์ดแวร์ Pixel 7 Pro แท้ 100%</p>
+            </div>
 
             <div class="package-grid">
+                <!-- Package Card 1 -->
                 <div class="package-card active" onclick="selectPackage(this, 1)">
-                    <div>
-                        <strong>Cloud Phone 1 เครื่อง <span class="vip-badge">VIP Free</span></strong>
-                        <p style="font-size: 12px; color: #94a3b8; margin-top: 4px;">Android 11 | 1080x2400 | Root + Play Integrity</p>
-                    </div>
-                    <span style="color: #38bdf8; font-weight: 600;">฿0 / เดือน</span>
+                    <div class="card-badge">ยอดนิยม</div>
+                    <h3>Starter Cloud</h3>
+                    <div class="price">฿290 <span>/ เดือน</span></div>
+                    <ul class="spec-list">
+                        <li><i class="fa-solid fa-check text-green"></i> 1x Pixel 7 Pro (Virtual)</li>
+                        <li><i class="fa-solid fa-check text-green"></i> RAM 4GB / Storage 64GB</li>
+                        <li><i class="fa-solid fa-check text-green"></i> Android 13 Native ADB</li>
+                        <li><i class="fa-solid fa-check text-green"></i> Bypass SafetyNet / Play Integrity</li>
+                    </ul>
                 </div>
 
-                <div class="package-card" onclick="selectPackage(this, 2)">
-                    <div>
-                        <strong>Cloud Phone 2 เครื่อง <span class="vip-badge">VIP Multi</span></strong>
-                        <p style="font-size: 12px; color: #94a3b8; margin-top: 4px;">เปิดได้พร้อมกัน 2 จอ | เหมาะสำหรับปล่อยฟาร์ม</p>
-                    </div>
-                    <span style="color: #38bdf8; font-weight: 600;">฿0 / เดือน</span>
+                <!-- Package Card 2 -->
+                <div class="package-card" onclick="selectPackage(this, 3)">
+                    <div class="card-badge vip">คุ้มสุด VIP</div>
+                    <h3>Multi-Cloud Farm (3 เครื่อง)</h3>
+                    <div class="price">฿790 <span>/ เดือน</span></div>
+                    <ul class="spec-list">
+                        <li><i class="fa-solid fa-check text-green"></i> 3x Pixel 7 Pro (Isolated IP)</li>
+                        <li><i class="fa-solid fa-check text-green"></i> RAM 6GB / Storage 128GB/เครื่อง</li>
+                        <li><i class="fa-solid fa-check text-green"></i> Auto ADB Port Binding</li>
+                        <li><i class="fa-solid fa-check text-green"></i> ซิงค์คลาวด์รวมเป็นเล่มเดียว</li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="button-group" style="margin-top: 24px;">
-                <button class="btn-blue" onclick="confirmPurchase()">ยืนยันการรับสิทธิ์ Cloud Phone</button>
+            <div class="action-bar">
+                <button class="btn-primary" onclick="confirmPurchase()">
+                    <i class="fa-solid fa-cart-shopping"></i> ยืนยันการสั่งซื้อ / เปิดใช้งานสิทธิ์ VIP
+                </button>
             </div>
-        </div>
+        </section>
 
-        <!-- [หน้า 2]: แดชบอร์ดแสดงคลาวด์ที่คุณมี (Cloud List Dashboard) -->
-        <div class="card wide-card hidden" id="dashboardSection">
+        <!-- Section 2: Dashboard (คลังคลาวด์โฟนรวมเล่มเดียว) -->
+        <section id="dashboardSection" class="section-container hidden">
             <div class="dashboard-header">
                 <div>
-                    <h2>แดชบอร์ด คลาวด์โฟนของคุณ</h2>
-                    <p class="subtitle" style="margin-bottom: 0;">คุณมีคลาวด์เปิดใช้งานอยู่ทั้งหมด <span id="cloudCount" style="color: #38bdf8; font-weight: 600;">0</span> เครื่อง</p>
+                    <h2 class="title-md"><i class="fa-solid fa-cubes"></i> คลังคลาวด์โฟนของคุณ</h2>
+                    <p class="subtitle">จำนวนเครื่องพร้อมใช้งานทั้งหมด: <span id="cloudCount" class="text-amber-400 font-bold">0</span> เครื่อง</p>
                 </div>
-                <button class="btn-outline-small" onclick="showBuySection()">+ เพิ่มเครื่องใหม่</button>
+                <button class="btn-secondary" onclick="showBuySection()">
+                    <i class="fa-solid fa-plus"></i> เพิ่มเครื่องคลาวด์
+                </button>
             </div>
 
-            <!-- รายการคลาวด์โฟนทั้งหมดของคุณ -->
-            <div class="cloud-list" id="cloudList">
-                <!-- รายการจะถูกสร้างผ่าน JavaScript -->
+            <!-- รายการคลาวด์การ์ด -->
+            <div id="cloudList" class="cloud-grid">
+                <!-- Javascript จะเรนเดอร์คลาวด์การ์ดที่นี่ -->
             </div>
-        </div>
+        </section>
 
-        <!-- [หน้า 3]: หน้าต่างควบคุมเครื่องเสมือน (RedFinger / Redroid Control Panel) -->
-        <div class="redfinger-layout hidden" id="emulatorSection">
-            <!-- แถบเครื่องมือควบคุมด้านข้าง -->
-            <div class="side-toolbar">
-                <button class="tool-btn" title="กลับหน้าแดชบอร์ด" onclick="closeEmulator()">⬅️</button>
-                <div class="divider"></div>
-                <button class="tool-btn" title="Home" onclick="sendKey('HOME')">🏠</button>
-                <button class="tool-btn" title="Back" onclick="sendKey('BACK')">◀️</button>
-                <button class="tool-btn" title="Recent Apps" onclick="sendKey('APP_SWITCH')">🔳</button>
-                <div class="divider"></div>
-                <button class="tool-btn" title="Power" onclick="sendKey('POWER')">🔴</button>
-            </div>
-
-            <!-- ตัวเครื่องมือถือจำลอง -->
-            <div class="phone-container">
-                <div class="device-header">
-                    <span id="activeDeviceName">Pixel 7 Pro #1</span>
-                    <span class="status-online">● ONLINE</span>
+        <!-- Section 3: High-Realistic Emulator Screen -->
+        <section id="emulatorSection" class="section-container hidden">
+            <div class="emulator-bar">
+                <button class="btn-back" onclick="closeEmulator()">
+                    <i class="fa-solid fa-arrow-left"></i> กลับไปคลังคลาวด์
+                </button>
+                <div class="device-status-info">
+                    <span id="activeDeviceName" class="font-bold">Pixel 7 Pro VIP #1</span>
+                    <span class="status-online"><i class="fa-solid fa-circle"></i> Connected (60 FPS)</span>
                 </div>
+            </div>
 
-                <div class="phone-screen">
-                    <div class="android-status-bar">
-                        <span>12:00</span>
-                        <span>📶 100%</span>
+            <!-- Phone Frame -->
+            <div class="phone-wrapper">
+                <div class="phone-frame">
+                    <!-- Notch / Camera -->
+                    <div class="phone-notch">
+                        <div class="camera-lens"></div>
+                        <div class="speaker-grille"></div>
                     </div>
 
-                    <!-- พื้นที่สตรีมหน้าจอ redroid -->
-                    <div class="screen-viewport" id="screenViewport">
-                        <div class="app-grid">
-                            <div class="app-item">
-                                <div class="app-icon-box" style="background: #15803d;">🎮</div>
-                                <span class="app-title">Game Farm</span>
+                    <!-- Screen Content -->
+                    <div class="phone-screen" id="phoneScreen">
+                        <!-- Top Status Bar -->
+                        <div class="android-status-bar">
+                            <span id="androidClock">12:00</span>
+                            <div class="status-icons">
+                                <i class="fa-solid fa-wifi"></i>
+                                <i class="fa-solid fa-signal"></i>
+                                <i class="fa-solid fa-battery-full"></i>
                             </div>
-                            <div class="app-item">
-                                <div class="app-icon-box" style="background: #1e40af;">🏦</div>
-                                <span class="app-title">Bank App</span>
+                        </div>
+
+                        <!-- Main Screen Content (Homescreen / App) -->
+                        <div id="appContainer" class="app-container">
+                            <!-- Clock Widget -->
+                            <div class="widget-clock">
+                                <div id="widgetTime" class="widget-time">12:00</div>
+                                <div id="widgetDate" class="widget-date">วันศุกร์, 25 กันยายน</div>
                             </div>
-                            <div class="app-item">
-                                <div class="app-icon-box" style="background: #b91c1c;">🛡️</div>
-                                <span class="app-title">Magisk</span>
+
+                            <!-- App Grid -->
+                            <div class="app-grid">
+                                <div class="app-icon" onclick="launchApp('LINE', 'https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg')">
+                                    <div class="icon-box bg-line"><i class="fa-comment-dots fa-solid"></i></div>
+                                    <span>LINE</span>
+                                </div>
+                                <div class="app-icon" onclick="launchApp('Facebook', 'https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg')">
+                                    <div class="icon-box bg-fb"><i class="fa-brands fa-facebook-f"></i></div>
+                                    <span>Facebook</span>
+                                </div>
+                                <div class="app-icon" onclick="launchApp('TikTok', '')">
+                                    <div class="icon-box bg-tiktok"><i class="fa-brands fa-tiktok"></i></div>
+                                    <span>TikTok</span>
+                                </div>
+                                <div class="app-icon" onclick="launchApp('Shopee', '')">
+                                    <div class="icon-box bg-shopee"><i class="fa-solid fa-bag-shopping"></i></div>
+                                    <span>Shopee</span>
+                                </div>
+                                <div class="app-icon" onclick="launchApp('Play Store', '')">
+                                    <div class="icon-box bg-playstore"><i class="fa-solid fa-play"></i></div>
+                                    <span>Play Store</span>
+                                </div>
+                                <div class="app-icon" onclick="openSettings()">
+                                    <div class="icon-box bg-settings"><i class="fa-solid fa-gear"></i></div>
+                                    <span>ตั้งค่า</span>
+                                </div>
                             </div>
-                            <div class="app-item">
-                                <div class="app-icon-box" style="background: #6b21a8;">📱</div>
-                                <span class="app-title">Settings</span>
-                            </div>
+                        </div>
+
+                        <!-- Android Navigation Bar (Bottom) -->
+                        <div class="android-nav-bar">
+                            <button class="nav-key" onclick="sendKey('BACK')"><i class="fa-solid fa-chevron-left"></i></button>
+                            <button class="nav-key" onclick="sendKey('HOME')"><i class="fa-regular fa-circle"></i></button>
+                            <button class="nav-key" onclick="sendKey('RECENTS')"><i class="fa-regular fa-square"></i></button>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-    </div>
+                <!-- Side Control Toolbar -->
+                <div class="side-controls">
+                    <button title="Power" onclick="sendKey('POWER')"><i class="fa-solid fa-power-off"></i></button>
+                    <button title="Volume Up" onclick="sendKey('VOL_UP')"><i class="fa-solid fa-volume-high"></i></button>
+                    <button title="Volume Down" onclick="sendKey('VOL_DOWN')"><i class="fa-solid fa-volume-low"></i></button>
+                    <button title="Rotate Screen" onclick="toggleRotate()"><i class="fa-solid fa-rotate"></i></button>
+                    <button title="ADB Shell" onclick="openAdbConsole()"><i class="fa-solid fa-terminal"></i></button>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <script src="script.js"></script>
 </body>
-            </html>
-                                                            
+</html>
