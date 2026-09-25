@@ -3,12 +3,12 @@ name: Deploy Real Redroid Cloud Phone
 on:
   push:
     branches: [ "main" ]
-  workflow_dispatch: # ปุ่มกดสั่งรันเองด้วยมือจากหน้า GitHub Actions
+  workflow_dispatch:
 
 jobs:
   deploy-redroid:
     name: Deploy & Run Redroid Container
-    runs-on: self-hosted # รันบน Self-hosted Runner (เครื่อง VPS/Server ที่มี KVM)
+    runs-on: self-hosted
 
     steps:
       - name: Checkout Code
@@ -17,12 +17,11 @@ jobs:
       - name: Load Android Kernel Modules
         run: |
           echo "Loading Binder & Ashmem modules..."
-          sudo modprobe binder_linux devices="binder,hwbinder,vndbinder"
+          sudo modprobe binder_linux devices="binder,hwbinder,vndbinder" || true
           sudo modprobe ashmem_linux || true
 
       - name: Stop and Remove Old Container
         run: |
-          echo "Cleaning up existing containers..."
           docker stop redroid-pixel7 || true
           docker rm redroid-pixel7 || true
 
@@ -53,6 +52,6 @@ jobs:
 
       - name: Verify Container Status
         run: |
-          sleep 8
+          sleep 5
           docker ps | grep redroid-pixel7
           echo "Redroid Cloud Phone deployed successfully on port 5555!"
