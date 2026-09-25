@@ -1,130 +1,118 @@
 // ==========================================================================
-// BlueFinger Cloud Phone - Main Script (Complete All-in-One)
+// BlueFinger Cloud Phone - Ultra-Realistic System Script
 // ==========================================================================
 
-// 1. รายชื่อผู้ได้รับสิทธิ์ VIP (VIP Whitelist)
+// 1. สิทธิ์ VIP
 const vipUsers = [
     "sawat2823@gmail.com",
     "oop280712@gmail.com"
 ];
 
-// กำหนดอีเมลผู้ใช้งานปัจจุบัน (สามารถสลับทดสอบบัญชีได้ที่นี่)
 let currentUserEmail = "sawat2823@gmail.com"; 
+let myCloudDevices = [];
+let selectedDeviceCount = 1;
+let activeDevice = null;
 
-let myCloudDevices = [];      // รายการ Cloud Phone ที่ผู้ใช้งานครอบครองอยู่
-let selectedDeviceCount = 1;  // จำนวนเครื่องที่เลือกจากแพ็กเกจ (ค่าเริ่มต้นคือ 1 เครื่อง)
-
-// ฟังก์ชันตรวจสอบสิทธิ์ VIP
+// 2. ตรวจสอบ VIP
 function checkIsVip(email) {
     return vipUsers.includes(email.trim().toLowerCase());
 }
 
-// ==========================================================================
-// 2. ระบบเริ่มต้นทำงานเมื่อโหลดหน้าเว็บ (Initialize User Interface)
-// ==========================================================================
 document.addEventListener("DOMContentLoaded", () => {
     updateUserBadge();
+    startAndroidClock();
 });
 
-// ฟังก์ชันอัปเดตป้ายแสดงชื่อและสถานะ VIP บนแถบ Header ด้านบน
 function updateUserBadge() {
     const userBadge = document.getElementById('userBadge');
     const isVip = checkIsVip(currentUserEmail);
 
     if (userBadge) {
         if (isVip) {
-            userBadge.innerHTML = `👑 VIP User: ${currentUserEmail}`;
-            userBadge.style.borderColor = "#f59e0b";
-            userBadge.style.color = "#fbbf24";
-            userBadge.style.background = "rgba(245, 158, 11, 0.15)";
+            userBadge.innerHTML = `<i class="fa-solid fa-crown text-amber-400"></i> VIP: ${currentUserEmail}`;
+            userBadge.className = "user-badge vip-active";
         } else {
-            userBadge.innerHTML = `👤 User: ${currentUserEmail}`;
-            userBadge.style.borderColor = "rgba(56, 189, 248, 0.3)";
-            userBadge.style.color = "#38bdf8";
-            userBadge.style.background = "rgba(56, 189, 248, 0.1)";
+            userBadge.innerHTML = `<i class="fa-solid fa-user"></i> Standard: ${currentUserEmail}`;
+            userBadge.className = "user-badge";
         }
     }
 }
 
-// ==========================================================================
-// 3. ฟังก์ชันเลือกแพ็กเกจคลาวด์โฟน
-// ==========================================================================
+// 3. นาฬิกา Android สมจริง
+function startAndroidClock() {
+    setInterval(() => {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const timeStr = `${hours}:${minutes}`;
+
+        const clockElem = document.getElementById('androidClock');
+        const widgetTime = document.getElementById('widgetTime');
+        
+        if (clockElem) clockElem.innerText = timeStr;
+        if (widgetTime) widgetTime.innerText = timeStr;
+    }, 1000);
+}
+
+// 4. เลือกแพ็กเกจ
 function selectPackage(element, count) {
-    // เอาสไตล์ไฮไลต์ออกจากแพ็กเกจอื่นทั้งหมด
     document.querySelectorAll('.package-card').forEach(card => card.classList.remove('active'));
-    
-    // ไฮไลต์แพ็กเกจที่คลิกเลือก
     element.classList.add('active');
-    
-    // บันทึกจำนวนเครื่องที่เลือก
     selectedDeviceCount = count;
 }
 
-// ==========================================================================
-// 4. ฟังก์ชันยืนยันการรับสิทธิ์ / กดซื้อแพ็กเกจ
-// ==========================================================================
+// 5. ซื้อ/สร้างคลาวด์โฟนรวมเล่ม
 function confirmPurchase() {
-    const isVip = checkIsVip(currentUserEmail);
-
-    // ตรวจสอบสิทธิ์ VIP
-    if (!isVip) {
-        alert("บัญชีของคุณยังไม่ได้เป็นสมาชิก VIP กรุณาสมัครสมาชิกก่อนใช้งาน Cloud Phone!");
+    if (!checkIsVip(currentUserEmail)) {
+        alert("⚠️ บัญชีของคุณไม่มีสิทธิ์ VIP กรุณาติดต่อผู้ดูแลระบบ");
         return;
     }
 
-    // ล้างรายการเดิม และสร้างรายการเครื่องคลาวด์ใหม่ตามจำนวนแพ็กเกจที่เลือก
     myCloudDevices = [];
     for (let i = 1; i <= selectedDeviceCount; i++) {
         myCloudDevices.push({
             id: i,
-            name: `Pixel 7 Pro VIP #${i}`,
-            ip: `192.168.1.${100 + i}`,
-            port: 5555 + i - 1,
+            name: `Google Pixel 7 Pro (VIP #${i})`,
+            ip: `10.0.0.${10 + i}`,
+            port: 5555 + (i - 1),
             status: "Online",
-            isVipDevice: true
+            androidVer: "Android 13 (SDK 33)",
+            fps: "60 FPS"
         });
     }
 
-    // อัปเดตรายการคลาวด์บนหน้าแดชบอร์ด
     renderDashboard();
-
-    // สลับหน้าจอ: ซ่อนหน้าเลือกแพ็กเกจ -> แสดงหน้าแดชบอร์ดรายการคลาวด์โฟน
     document.getElementById('buySection').classList.add('hidden');
     document.getElementById('dashboardSection').classList.remove('hidden');
 }
 
-// ==========================================================================
-// 5. ฟังก์ชันสร้างและอัปเดตหน้าต่างแสดงรายการคลาวด์ (Cloud Dashboard View)
-// ==========================================================================
+// 6. เรนเดอร์หน้าคลังคลาวด์
 function renderDashboard() {
     const listContainer = document.getElementById('cloudList');
     const countSpan = document.getElementById('cloudCount');
 
-    // อัปเดตตัวเลขแสดงจำนวนคลาวด์ที่มีอยู่ทั้งหมด
-    if (countSpan) {
-        countSpan.innerText = myCloudDevices.length;
-    }
+    if (countSpan) countSpan.innerText = myCloudDevices.length;
 
-    // ล้างการ์ดเดิมออกแล้วสร้างการ์ดคลาวด์โฟนใหม่ตามจำนวนเครื่องที่มี
     if (listContainer) {
         listContainer.innerHTML = '';
-
         myCloudDevices.forEach(device => {
             const item = document.createElement('div');
-            item.className = 'cloud-item-card';
+            item.className = 'cloud-card';
             item.innerHTML = `
-                <div class="cloud-info-title">
-                    <span>📱 ${device.name} ${device.isVipDevice ? '<span class="vip-badge">VIP</span>' : ''}</span>
-                    <span style="font-size: 12px; color: #4ade80;">
-                        <span class="cloud-status-dot"></span>${device.status}
-                    </span>
+                <div class="cloud-card-header">
+                    <div class="device-title">
+                        <i class="fa-solid fa-mobile-screen text-sky-400"></i>
+                        <span>${device.name}</span>
+                    </div>
+                    <span class="badge-online"><i class="fa-solid fa-circle"></i> ${device.status}</span>
                 </div>
-                <div style="font-size: 12px; color: #94a3b8;">
-                    <div>ADB Port: ${device.port}</div>
-                    <div>IP Address: ${device.ip}</div>
+                <div class="cloud-card-body">
+                    <div><span>OS:</span> ${device.androidVer}</div>
+                    <div><span>IP:</span> ${device.ip}:${device.port}</div>
+                    <div><span>Stream:</span> WebRTC / H.264 (${device.fps})</div>
                 </div>
-                <button class="btn-blue" style="padding: 8px; font-size: 13px;" onclick="openEmulator('${device.name}')">
-                    เข้าควบคุมเครื่อง
+                <button class="btn-control" onclick="openEmulator('${device.name}')">
+                    <i class="fa-solid fa-display"></i> เข้าควบคุมเครื่อง
                 </button>
             `;
             listContainer.appendChild(item);
@@ -132,41 +120,122 @@ function renderDashboard() {
     }
 }
 
-// ==========================================================================
-// 6. ฟังก์ชันเปิดหน้าจอควบคุมเครื่องคลาวด์เสมือน (Emulator Control Panel)
-// ==========================================================================
+// 7. เปิดเครื่อง Emulator
 function openEmulator(deviceName) {
-    // เปลี่ยนชื่อบนหัวข้อเครื่องที่เข้าควบคุม
-    const activeDeviceNameElem = document.getElementById('activeDeviceName');
-    if (activeDeviceNameElem) {
-        activeDeviceNameElem.innerText = deviceName;
-    }
-
-    // สลับหน้าจอ: ซ่อนหน้าแดชบอร์ด -> แสดงหน้าจอควบคุมมือถือ
+    activeDevice = deviceName;
+    document.getElementById('activeDeviceName').innerText = deviceName;
     document.getElementById('dashboardSection').classList.add('hidden');
     document.getElementById('emulatorSection').classList.remove('hidden');
+    goHome();
 }
 
-// ==========================================================================
-// 7. ฟังก์ชันปิดหน้าจอควบคุมเพื่อกลับไปยังหน้าแดชบอร์ดรายการคลาวด์
-// ==========================================================================
 function closeEmulator() {
-    // สลับหน้าจอ: ซ่อนหน้าควบคุมมือถือ -> แสดงหน้าแดชบอร์ด
     document.getElementById('emulatorSection').classList.add('hidden');
     document.getElementById('dashboardSection').classList.remove('hidden');
 }
 
-// ==========================================================================
-// 8. ฟังก์ชันกลับไปหน้าเลือกซื้อแพ็กเกจ (เพื่อเพิ่มเครื่องใหม่)
-// ==========================================================================
 function showBuySection() {
     document.getElementById('dashboardSection').classList.add('hidden');
     document.getElementById('buySection').classList.remove('hidden');
 }
 
-// ==========================================================================
-// 9. ฟังก์ชันส่งคำสั่งปุ่มควบคุม Android (Home, Back, Recent, Power)
-// ==========================================================================
+// 8. จำลองการทำงานหน้าจอแอปแบบสมจริง
+function launchApp(appName, iconUrl) {
+    const container = document.getElementById('appContainer');
+    container.innerHTML = `
+        <div class="app-view">
+            <div class="app-view-header">
+                <span>${appName}</span>
+                <i class="fa-solid fa-xmark cursor-pointer" onclick="goHome()"></i>
+            </div>
+            <div class="app-view-body">
+                <i class="fa-solid fa-spinner fa-spin app-loader"></i>
+                <p>กำลังเชื่อมต่อข้อมูล ${appName} บนเครื่อง Pixel 7 Pro...</p>
+                <div class="mock-feed">
+                    <div class="mock-post"></div>
+                    <div class="mock-post"></div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function openSettings() {
+    const container = document.getElementById('appContainer');
+    container.innerHTML = `
+        <div class="app-view">
+            <div class="app-view-header">
+                <span>การตั้งค่า (Settings)</span>
+            </div>
+            <div class="app-view-body settings-list">
+                <div class="setting-item">
+                    <span>เกี่ยวกับโทรศัพท์</span>
+                    <small>Pixel 7 Pro (Android 13)</small>
+                </div>
+                <div class="setting-item">
+                    <span>สถานะ Root / Magisk</span>
+                    <small class="text-green">Hidden (Play Integrity Passed)</small>
+                </div>
+                <div class="setting-item">
+                    <span>ADB Connection</span>
+                    <small class="text-sky">Port 5555 Active</small>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function goHome() {
+    const container = document.getElementById('appContainer');
+    container.innerHTML = `
+        <div class="widget-clock">
+            <div id="widgetTime" class="widget-time">12:00</div>
+            <div class="widget-date">วันศุกร์, 25 กันยายน</div>
+        </div>
+        <div class="app-grid">
+            <div class="app-icon" onclick="launchApp('LINE')">
+                <div class="icon-box bg-line"><i class="fa-comment-dots fa-solid"></i></div>
+                <span>LINE</span>
+            </div>
+            <div class="app-icon" onclick="launchApp('Facebook')">
+                <div class="icon-box bg-fb"><i class="fa-brands fa-facebook-f"></i></div>
+                <span>Facebook</span>
+            </div>
+            <div class="app-icon" onclick="launchApp('TikTok')">
+                <div class="icon-box bg-tiktok"><i class="fa-brands fa-tiktok"></i></div>
+                <span>TikTok</span>
+            </div>
+            <div class="app-icon" onclick="launchApp('Shopee')">
+                <div class="icon-box bg-shopee"><i class="fa-solid fa-bag-shopping"></i></div>
+                <span>Shopee</span>
+            </div>
+            <div class="app-icon" onclick="launchApp('Play Store')">
+                <div class="icon-box bg-playstore"><i class="fa-solid fa-play"></i></div>
+                <span>Play Store</span>
+            </div>
+            <div class="app-icon" onclick="openSettings()">
+                <div class="icon-box bg-settings"><i class="fa-solid fa-gear"></i></div>
+                <span>ตั้งค่า</span>
+            </div>
+        </div>
+    `;
+    startAndroidClock();
+}
+
+// 9. คำสั่งปุ่มควบคุม Android
 function sendKey(key) {
-    console.log(`Sending Key Event to redroid: ${key}`);
+    if (key === 'HOME' || key === 'BACK') {
+        goHome();
+    } else {
+        console.log(`Android Input Event: ${key}`);
+    }
+}
+
+function toggleRotate() {
+    const screen = document.getElementById('phoneScreen');
+    screen.classList.toggle('rotated');
+}
+
+function openAdbConsole() {
+    alert("💻 ADB Shell Connected: \n$ adb connect 127.0.0.1:5555\nConnected to redroid-pixel7");
 }
