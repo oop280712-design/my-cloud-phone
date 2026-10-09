@@ -21,7 +21,7 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(4, 6, 10, 0.85);
+    background: rgba(4, 6, 10, 0.88);
     backdrop-filter: blur(10px);
     display: flex;
     justify-content: center;
@@ -33,10 +33,10 @@ body {
     background: #111723;
     border: 1px solid #223046;
     border-radius: 16px;
-    padding: 28px;
-    width: 90%;
-    max-width: 680px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    padding: 24px;
+    width: 95%;
+    max-width: 860px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
     text-align: center;
 }
 
@@ -54,7 +54,7 @@ body {
 
 .plans-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 16px;
     margin-bottom: 24px;
 }
@@ -78,7 +78,7 @@ body {
 .plan-card.active {
     border-color: #2563eb;
     background: #132036;
-    box-shadow: 0 0 20px rgba(37, 99, 235, 0.25);
+    box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
 }
 
 .plan-badge {
@@ -154,7 +154,7 @@ body {
     background: linear-gradient(135deg, #1d4ed8, #1e40af);
 }
 
-/* VMOS Frame Layout */
+/* VMOS Container */
 .vmos-container {
     width: 380px;
     height: 780px;
