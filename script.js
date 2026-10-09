@@ -1,47 +1,65 @@
+const VIP_EMAILS = ["oop280712@gmail.com", "sawat2823@gmail.com"];
+
 let currentSelectedPlan = {
-    name: "Ultra Extreme",
+    name: "Ultra Extreme VIP",
     cpu: "8 vCPU High-Clock",
     ram: "24 GB RAM",
     price: "1,200"
 };
 
-// สลับการเลือกแพ็กเกจ
+// ตรวจสอบอีเมลแบบ Real-time เมื่อพิมพ์
+document.getElementById('user-email').addEventListener('input', function(e) {
+    const email = e.target.value.trim().toLowerCase();
+    const statusMsg = document.getElementById('vip-status-msg');
+    const priceDisplay = document.getElementById('price-display');
+
+    if (VIP_EMAILS.includes(email)) {
+        statusMsg.textContent = "✨ ตรวจพบสิทธิ์ VIP! ใช้งานแพ็กเกจนี้ฟรีทันที";
+        statusMsg.style.color = "#10b981";
+        priceDisplay.innerHTML = "<s>฿1,200</s> <span style='color: #10b981;'>FREE (VIP)</span>";
+    } else {
+        statusMsg.textContent = "";
+        priceDisplay.innerHTML = "฿1,200 <span>/เดือน</span>";
+    }
+});
+
 function selectPlan(cardElement, name, cpu, ram, price) {
     document.querySelectorAll('.plan-card').forEach(card => card.classList.remove('active'));
     cardElement.classList.add('active');
     currentSelectedPlan = { name, cpu, ram, price };
-    document.getElementById('buy-price').textContent = `฿${price}`;
 }
 
-// กดปุ่ม สั่งซื้อ และเริ่ม บูต Android
 document.getElementById('buy-btn').addEventListener('click', () => {
-    // 1. ซ่อนหน้าต่าง Modal
+    const emailInput = document.getElementById('user-email').value.trim().toLowerCase();
+    const isVip = VIP_EMAILS.includes(emailInput);
+
     document.getElementById('plan-modal').style.display = 'none';
     document.getElementById('vmos-overlay').style.display = 'none';
 
-    // 2. อัปเดตข้อมูลบน Status Bar ด้านบน
     document.getElementById('display-plan-name').textContent = currentSelectedPlan.name;
     const badge = document.getElementById('display-specs');
     badge.textContent = `${currentSelectedPlan.cpu} | ${currentSelectedPlan.ram}`;
     badge.classList.add('active');
+    
     document.getElementById('status-dot').className = 'status-dot green';
-    document.getElementById('ping').textContent = '12ms';
+    document.getElementById('ping').textContent = '10ms';
 
-    // 3. แสดงหน้าต่าง Boot Screen (ขึ้นรูป Android)
+    if (isVip) {
+        document.getElementById('vip-user-badge').textContent = `VIP Verified: ${emailInput}`;
+    }
+
     const bootScreen = document.getElementById('boot-screen');
     const bootStatus = document.getElementById('boot-status');
     bootScreen.style.display = 'flex';
 
-    // จำลองขั้นตอนการบูตเครื่อง
     setTimeout(() => {
-        bootStatus.textContent = "Allocating 24 GB RAM & CPU Cores...";
+        bootStatus.textContent = isVip ? "🔓 Bypassing VIP Security..." : "Allocating Hardware Resources...";
     }, 1200);
 
     setTimeout(() => {
         bootStatus.textContent = "Loading VMOS Android System...";
     }, 2500);
 
-    // 4. บูตเสร็จแล้ว ตัดเข้าสู่หน้าหลัก Android Home
     setTimeout(() => {
         bootScreen.style.display = 'none';
         document.getElementById('android-home').style.display = 'flex';
@@ -49,7 +67,6 @@ document.getElementById('buy-btn').addEventListener('click', () => {
     }, 4000);
 });
 
-// อัปเดตเวลาบนหน้าจอ Android
 function updateClock() {
     const now = new Date();
     const hours = String(now.getHours()).padStart(2, '0');
@@ -61,7 +78,6 @@ function updateClock() {
 }
 setInterval(updateClock, 1000);
 
-// ปุ่มเปิด Modal
 document.getElementById('open-modal-btn').addEventListener('click', () => {
     document.getElementById('plan-modal').style.display = 'flex';
 });
@@ -70,12 +86,10 @@ document.getElementById('change-plan-btn').addEventListener('click', () => {
     document.getElementById('plan-modal').style.display = 'flex';
 });
 
-// ฟังก์ชันกดเปิดแอปจำลอง
 function openApp(appName) {
     alert(`📱 กำลังเปิดแอปพลิเคชัน: ${appName}`);
 }
 
-// ปุ่มด้านข้าง
 document.getElementById('home-btn').addEventListener('click', () => {
     document.getElementById('android-home').style.display = 'flex';
 });
