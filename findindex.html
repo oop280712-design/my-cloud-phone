@@ -1,1 +1,88 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VMOS Cloud Phone & Instance Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Modal เลือกแพ็กเกจ -->
+    <div id="plan-modal" class="modal-backdrop">
+        <div class="modal-card">
+            <h2>☁️ เลือกแพ็กเกจ VMOS Cloud Phone</h2>
+            <p class="modal-subtitle">เลือกสเปกเครื่องจำลองสำหรับเริ่มใช้งานระบบ</p>
 
+            <div class="plans-grid">
+                <!-- Plan 1: Starter High-Performance -->
+                <div class="plan-card active" onclick="selectPlan(this, 'Extreme Compute', '1,200 vCPU', '500 GB RAM')">
+                    <div class="plan-badge">แนะนำ / เริ่มต้น</div>
+                    <h3>Extreme Compute</h3>
+                    <div class="plan-price">฿1,200 <span>/เดือน</span></div>
+                    <ul class="plan-specs">
+                        <li>⚡ <strong>1,200 Cores</strong> vCPU</li>
+                        <li>🧠 <strong>500 GB</strong> High-Speed RAM</li>
+                        <li>💾 2 TB NVMe SSD Storage</li>
+                        <li>📶 10 Gbps Dedicated Bandwidth</li>
+                        <li>📱 Android 13 Enterprise OS</li>
+                    </ul>
+                    <button class="select-btn">เลือกแพ็กเกจนี้</button>
+                </div>
+
+                <!-- Plan 2: Enterprise Cluster -->
+                <div class="plan-card" onclick="selectPlan(this, 'Enterprise Cluster', '2,400 vCPU', '1 TB RAM')">
+                    <h3>Enterprise Cluster</h3>
+                    <div class="plan-price">฿2,500 <span>/เดือน</span></div>
+                    <ul class="plan-specs">
+                        <li>⚡ <strong>2,400 Cores</strong> vCPU</li>
+                        <li>🧠 <strong>1,000 GB (1 TB)</strong> RAM</li>
+                        <li>💾 5 TB NVMe SSD Storage</li>
+                        <li>📶 20 Gbps Dedicated Bandwidth</li>
+                        <li>📱 Android 13/14 Multi-Instance</li>
+                    </ul>
+                    <button class="select-btn">เลือกแพ็กเกจนี้</button>
+                </div>
+            </div>
+
+            <button id="confirm-plan-btn" class="confirm-btn">เริ่มใช้งานอินสแตนซ์</button>
+        </div>
+    </div>
+
+    <!-- หน้าจอ Cloud Phone Container -->
+    <div class="vmos-container">
+        <!-- Top Status Bar -->
+        <div class="vmos-header">
+            <div class="device-info">
+                <span class="status-dot red" id="status-dot"></span>
+                <span class="device-name" id="display-plan-name">ยังไม่ได้เลือกแพ็กเกจ</span>
+                <span class="badge" id="display-specs">N/A</span>
+            </div>
+            <div class="ping-info">
+                <span>Latency: <strong id="ping">-- ms</strong></span>
+            </div>
+        </div>
+
+        <!-- Main Screen Area -->
+        <div class="vmos-screen">
+            <div id="vmos-overlay" class="vmos-overlay">
+                <div class="cloud-icon">☁️</div>
+                <h3 id="overlay-title">กรุณาเลือกแพ็กเกจการใช้งาน</h3>
+                <p id="overlay-desc">คลิกปุ่มด้านล่างเพื่อเปิดหน้าต่างเลือกสเปกเครื่อง</p>
+                <button id="open-modal-btn" class="vmos-btn-primary">เปิดหน้าเลือกแพ็กเกจ</button>
+            </div>
+            <iframe id="stream-frame" src="" style="display: none;"></iframe>
+        </div>
+
+        <!-- Floating Sidebar Controls -->
+        <div class="vmos-sidebar">
+            <button class="side-btn" id="home-btn" title="Home">🏠</button>
+            <button class="side-btn" id="back-btn" title="Back">↩️</button>
+            <button class="side-btn" id="recent-btn" title="Recents">📑</button>
+            <div class="divider"></div>
+            <button class="side-btn" id="change-plan-btn" title="เปลี่ยนแพ็กเกจ">⚙️</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
