@@ -1,1 +1,268 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
 
+body {
+    background: #07090e;
+    color: #e1e6ed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Modal Overlay */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(4, 6, 10, 0.85);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal-card {
+    background: #111723;
+    border: 1px solid #223046;
+    border-radius: 16px;
+    padding: 28px;
+    width: 90%;
+    max-width: 680px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    text-align: center;
+}
+
+.modal-card h2 {
+    font-size: 22px;
+    color: #fff;
+    margin-bottom: 6px;
+}
+
+.modal-subtitle {
+    font-size: 13px;
+    color: #8a99ad;
+    margin-bottom: 24px;
+}
+
+.plans-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.plan-card {
+    background: #182232;
+    border: 2px solid #233147;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.plan-card:hover {
+    border-color: #3b82f6;
+    transform: translateY(-2px);
+}
+
+.plan-card.active {
+    border-color: #2563eb;
+    background: #132036;
+    box-shadow: 0 0 20px rgba(37, 99, 235, 0.25);
+}
+
+.plan-badge {
+    position: absolute;
+    top: -10px;
+    right: 12px;
+    background: #2563eb;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 10px;
+}
+
+.plan-card h3 {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.plan-price {
+    font-size: 24px;
+    font-weight: bold;
+    color: #38bdf8;
+    margin-bottom: 14px;
+}
+
+.plan-price span {
+    font-size: 12px;
+    color: #8a99ad;
+    font-weight: normal;
+}
+
+.plan-specs {
+    list-style: none;
+    font-size: 12px;
+    color: #cbd5e1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.select-btn {
+    width: 100%;
+    padding: 8px;
+    background: #233147;
+    border: none;
+    color: #94a3b8;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.plan-card.active .select-btn {
+    background: #2563eb;
+    color: #fff;
+}
+
+.confirm-btn {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: #fff;
+    border: none;
+    padding: 12px 36px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+}
+
+.confirm-btn:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+}
+
+/* VMOS Frame Layout */
+.vmos-container {
+    width: 380px;
+    height: 780px;
+    background: #121824;
+    border: 2px solid #1e293b;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+}
+
+.vmos-header {
+    height: 42px;
+    background: #182232;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 14px;
+    border-bottom: 1px solid #233147;
+    font-size: 12px;
+}
+
+.device-info { display: flex; align-items: center; gap: 8px; }
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #ef4444;
+}
+
+.status-dot.green {
+    background-color: #10b981;
+    box-shadow: 0 0 8px #10b981;
+}
+
+.device-name { font-weight: 600; color: #f8fafc; }
+
+.badge {
+    background: #334155;
+    color: #94a3b8;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.badge.active { background: #2563eb; color: #fff; }
+
+.ping-info { color: #94a3b8; }
+.ping-info strong { color: #10b981; }
+
+.vmos-screen {
+    flex: 1;
+    background: #05070a;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.vmos-overlay { text-align: center; padding: 20px; }
+.cloud-icon { font-size: 48px; margin-bottom: 10px; }
+.vmos-overlay h3 { font-size: 18px; margin-bottom: 6px; color: #ffffff; }
+.vmos-overlay p { font-size: 13px; color: #64748b; margin-bottom: 20px; }
+
+.vmos-btn-primary {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#stream-frame { width: 100%; height: 100%; border: none; }
+
+.vmos-sidebar {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(24, 34, 50, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    padding: 8px 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+
+.side-btn {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.side-btn:hover { background: rgba(255, 255, 255, 0.1); color: #ffffff; }
+.divider { width: 16px; height: 1px; background: rgba(255, 255, 255, 0.15); }
