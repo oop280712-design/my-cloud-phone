@@ -3,70 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VMOS Cloud Phone Container Manager</title>
+    <title>VMOS Cloud Phone Container</title>
     <link rel="stylesheet" href="star.css">
 </head>
 <body>
-    <!-- Modal เลือกแพ็กเกจ -->
+
+    <!-- 1. Modal เลือกและสั่งซื้อแพ็กเกจ -->
     <div id="plan-modal" class="modal-backdrop">
         <div class="modal-card">
             <h2>☁️ เลือกแพ็กเกจ VMOS Cloud Phone</h2>
-            <p class="modal-subtitle">เลือกสเปกเครื่องจำลองสำหรับเริ่มใช้งานระบบ (สูงสุด 24 GB RAM)</p>
+            <p class="modal-subtitle">เลือกสเปกเครื่องจำลองเพื่อทำการสั่งซื้อและเปิดใช้งานทันที</p>
 
             <div class="plans-grid">
-                <!-- Plan 1: Standard Performance -->
-                <div class="plan-card" onclick="selectPlan(this, 'Standard Cloud', '4 vCPU', '8 GB RAM')">
+                <!-- Plan 1 -->
+                <div class="plan-card" onclick="selectPlan(this, 'Standard Cloud', '4 vCPU', '8 GB RAM', '350')">
                     <h3>Standard Cloud</h3>
                     <div class="plan-price">฿350 <span>/เดือน</span></div>
                     <ul class="plan-specs">
                         <li>⚡ <strong>4 Cores</strong> vCPU</li>
-                        <li>🧠 <strong>8 GB</strong> LPDDR5X RAM</li>
-                        <li>💾 128 GB UFS 4.0 Storage</li>
-                        <li>📱 Android 13 Base OS</li>
+                        <li>🧠 <strong>8 GB</strong> RAM</li>
+                        <li>💾 128 GB Storage</li>
+                        <li>📱 Android 13 OS</li>
                     </ul>
                     <button class="select-btn">เลือกแพ็กเกจนี้</button>
                 </div>
 
-                <!-- Plan 2: Pro Gaming -->
-                <div class="plan-card" onclick="selectPlan(this, 'Pro Gaming', '8 vCPU', '16 GB RAM')">
+                <!-- Plan 2 -->
+                <div class="plan-card" onclick="selectPlan(this, 'Pro Gaming', '8 vCPU', '16 GB RAM', '750')">
                     <h3>Pro Gaming</h3>
                     <div class="plan-price">฿750 <span>/เดือน</span></div>
                     <ul class="plan-specs">
                         <li>⚡ <strong>8 Cores</strong> vCPU</li>
-                        <li>🧠 <strong>16 GB</strong> LPDDR5X RAM</li>
-                        <li>💾 256 GB UFS 4.0 Storage</li>
-                        <li>📱 Android 14 High Performance</li>
+                        <li>🧠 <strong>16 GB</strong> RAM</li>
+                        <li>💾 256 GB Storage</li>
+                        <li>📱 Android 14 OS</li>
                     </ul>
                     <button class="select-btn">เลือกแพ็กเกจนี้</button>
                 </div>
 
-                <!-- Plan 3: Max Ultra (24 GB RAM) -->
-                <div class="plan-card active" onclick="selectPlan(this, 'Ultra Extreme', '8 vCPU High-Clock', '24 GB RAM')">
-                    <div class="plan-badge">สูงสุด / แนะนำ</div>
+                <!-- Plan 3 (Default Selected) -->
+                <div class="plan-card active" onclick="selectPlan(this, 'Ultra Extreme', '8 vCPU High-Clock', '24 GB RAM', '1,200')">
+                    <div class="plan-badge">แนะนำ / แรงสุด</div>
                     <h3>Ultra Extreme</h3>
                     <div class="plan-price">฿1,200 <span>/เดือน</span></div>
                     <ul class="plan-specs">
                         <li>⚡ <strong>8 Cores</strong> Flagship vCPU</li>
-                        <li>🧠 <strong>24 GB</strong> High-Speed LPDDR5X RAM</li>
+                        <li>🧠 <strong>24 GB</strong> RAM</li>
                         <li>💾 512 GB NVMe Storage</li>
-                        <li>🛡️ Anti-Detect & Root Hide Built-in</li>
                         <li>📱 Android 14 Unlocked OS</li>
                     </ul>
                     <button class="select-btn">เลือกแพ็กเกจนี้</button>
                 </div>
             </div>
 
-            <button id="confirm-plan-btn" class="confirm-btn">เริ่มใช้งานอินสแตนซ์</button>
+            <button id="buy-btn" class="confirm-btn">💳 สั่งซื้อและเปิดใช้งานทันที (<span id="buy-price">฿1,200</span>)</button>
         </div>
     </div>
 
-    <!-- หน้าจอ Cloud Phone Container -->
+    <!-- 2. กรอบ Cloud Phone -->
     <div class="vmos-container">
         <!-- Top Status Bar -->
         <div class="vmos-header">
             <div class="device-info">
-                <span class="status-dot red" id="status-dot"></span>
-                <span class="device-name" id="display-plan-name">ยังไม่ได้เลือกแพ็กเกจ</span>
+                <span class="status-dot" id="status-dot"></span>
+                <span class="device-name" id="display-plan-name">รอการสั่งซื้อ...</span>
                 <span class="badge" id="display-specs">N/A</span>
             </div>
             <div class="ping-info">
@@ -76,16 +76,58 @@
 
         <!-- Main Screen Area -->
         <div class="vmos-screen">
+            
+            <!-- 2.1 หน้าจอเลือกก่อนซื้อ -->
             <div id="vmos-overlay" class="vmos-overlay">
                 <div class="cloud-icon">☁️</div>
-                <h3 id="overlay-title">กรุณาเลือกแพ็กเกจการใช้งาน</h3>
-                <p id="overlay-desc">คลิกปุ่มด้านล่างเพื่อเปิดหน้าต่างเลือกสเปกเครื่อง</p>
-                <button id="open-modal-btn" class="vmos-btn-primary">เปิดหน้าเลือกแพ็กเกจ</button>
+                <h3>ยังไม่ได้เชื่อมต่ออินสแตนซ์</h3>
+                <p>กรุณากดสั่งซื้อแพ็กเกจเพื่อเริ่มบูตระบบ Cloud Phone</p>
+                <button id="open-modal-btn" class="vmos-btn-primary">เลือกและสั่งซื้อแพ็กเกจ</button>
             </div>
-            <iframe id="stream-frame" src="" style="display: none;"></iframe>
+
+            <!-- 2.2 หน้าจอบูต Android (Boot Screen) -->
+            <div id="boot-screen" class="boot-screen" style="display: none;">
+                <div class="android-logo">android</div>
+                <div class="spinner"></div>
+                <p class="boot-text" id="boot-status">Starting Cloud Instance...</p>
+            </div>
+
+            <!-- 2.3 หน้าจอหลัก Cloud Phone (Home Screen) -->
+            <div id="android-home" class="android-home" style="display: none;">
+                <div class="system-time-bar">
+                    <span id="android-clock">12:00</span>
+                    <span>5G 📶 100% 🔋</span>
+                </div>
+
+                <div class="widget-clock">
+                    <h1 id="main-time">12:00</h1>
+                    <p>VMOS Cloud OS 14</p>
+                </div>
+
+                <!-- แอปพลิเคชันบนมือถือ -->
+                <div class="app-grid">
+                    <div class="app-item" onclick="openApp('Google Play Store')">
+                        <div class="app-icon store">▶</div>
+                        <span>Play Store</span>
+                    </div>
+                    <div class="app-item" onclick="openApp('Chrome Browser')">
+                        <div class="app-icon chrome">🌐</div>
+                        <span>Chrome</span>
+                    </div>
+                    <div class="app-item" onclick="openApp('Game Center')">
+                        <div class="app-icon game">🎮</div>
+                        <span>Games</span>
+                    </div>
+                    <div class="app-item" onclick="openApp('System Settings')">
+                        <div class="app-icon settings">⚙️</div>
+                        <span>Settings</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <!-- Floating Sidebar Controls -->
+        <!-- Sidebar Controls -->
         <div class="vmos-sidebar">
             <button class="side-btn" id="home-btn" title="Home">🏠</button>
             <button class="side-btn" id="back-btn" title="Back">↩️</button>
