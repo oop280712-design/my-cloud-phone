@@ -8,11 +8,18 @@
 </head>
 <body>
 
-    <!-- 1. Modal เลือกและสั่งซื้อแพ็กเกจ -->
+    <!-- 1. Modal เลือกและตรวจสอบสิทธิ์ VIP -->
     <div id="plan-modal" class="modal-backdrop">
         <div class="modal-card">
             <h2>☁️ เลือกแพ็กเกจ VMOS Cloud Phone</h2>
-            <p class="modal-subtitle">เลือกสเปกเครื่องจำลองเพื่อทำการสั่งซื้อและเปิดใช้งานทันที</p>
+            <p class="modal-subtitle">กรอกอีเมลของคุณเพื่อตรวจสอบสิทธิ์พิเศษ VIP และเลือกสเปกเครื่องจำลอง</p>
+
+            <!-- ช่องกรอกอีเมล VIP -->
+            <div class="vip-input-group">
+                <label for="user-email">อีเมลบัญชีผู้ใช้:</label>
+                <input type="email" id="user-email" placeholder="ระบุอีเมลของคุณ เช่น oop280712@gmail.com" />
+                <span id="vip-status-msg" class="vip-msg"></span>
+            </div>
 
             <div class="plans-grid">
                 <!-- Plan 1 -->
@@ -41,22 +48,22 @@
                     <button class="select-btn">เลือกแพ็กเกจนี้</button>
                 </div>
 
-                <!-- Plan 3 (Default Selected) -->
-                <div class="plan-card active" onclick="selectPlan(this, 'Ultra Extreme', '8 vCPU High-Clock', '24 GB RAM', '1,200')">
-                    <div class="plan-badge">แนะนำ / แรงสุด</div>
+                <!-- Plan 3 (VIP Free / Ultra) -->
+                <div class="plan-card active" onclick="selectPlan(this, 'Ultra Extreme VIP', '8 vCPU High-Clock', '24 GB RAM', '0')">
+                    <div class="plan-badge">VIP / แรงสุด (ฟรี)</div>
                     <h3>Ultra Extreme</h3>
-                    <div class="plan-price">฿1,200 <span>/เดือน</span></div>
+                    <div class="plan-price" id="price-display">฿1,200 <span>/เดือน</span></div>
                     <ul class="plan-specs">
                         <li>⚡ <strong>8 Cores</strong> Flagship vCPU</li>
                         <li>🧠 <strong>24 GB</strong> RAM</li>
                         <li>💾 512 GB NVMe Storage</li>
-                        <li>📱 Android 14 Unlocked OS</li>
+                        <li>👑 VIP Unlimited Access</li>
                     </ul>
                     <button class="select-btn">เลือกแพ็กเกจนี้</button>
                 </div>
             </div>
 
-            <button id="buy-btn" class="confirm-btn">💳 สั่งซื้อและเปิดใช้งานทันที (<span id="buy-price">฿1,200</span>)</button>
+            <button id="buy-btn" class="confirm-btn">💳 ยืนยันและเปิดใช้งานทันที</button>
         </div>
     </div>
 
@@ -66,7 +73,7 @@
         <div class="vmos-header">
             <div class="device-info">
                 <span class="status-dot" id="status-dot"></span>
-                <span class="device-name" id="display-plan-name">รอการสั่งซื้อ...</span>
+                <span class="device-name" id="display-plan-name">รอการเข้าสู่ระบบ...</span>
                 <span class="badge" id="display-specs">N/A</span>
             </div>
             <div class="ping-info">
@@ -77,22 +84,19 @@
         <!-- Main Screen Area -->
         <div class="vmos-screen">
             
-            <!-- 2.1 หน้าจอเลือกก่อนซื้อ -->
             <div id="vmos-overlay" class="vmos-overlay">
                 <div class="cloud-icon">☁️</div>
                 <h3>ยังไม่ได้เชื่อมต่ออินสแตนซ์</h3>
-                <p>กรุณากดสั่งซื้อแพ็กเกจเพื่อเริ่มบูตระบบ Cloud Phone</p>
-                <button id="open-modal-btn" class="vmos-btn-primary">เลือกและสั่งซื้อแพ็กเกจ</button>
+                <p>กรุณากรอกอีเมลและเลือกแพ็กเกจเพื่อเริ่มบูตระบบ Cloud Phone</p>
+                <button id="open-modal-btn" class="vmos-btn-primary">เปิดหน้าจัดการสเปก</button>
             </div>
 
-            <!-- 2.2 หน้าจอบูต Android (Boot Screen) -->
             <div id="boot-screen" class="boot-screen" style="display: none;">
                 <div class="android-logo">android</div>
                 <div class="spinner"></div>
-                <p class="boot-text" id="boot-status">Starting Cloud Instance...</p>
+                <p class="boot-text" id="boot-status">Verifying VIP Credentials...</p>
             </div>
 
-            <!-- 2.3 หน้าจอหลัก Cloud Phone (Home Screen) -->
             <div id="android-home" class="android-home" style="display: none;">
                 <div class="system-time-bar">
                     <span id="android-clock">12:00</span>
@@ -101,10 +105,9 @@
 
                 <div class="widget-clock">
                     <h1 id="main-time">12:00</h1>
-                    <p>VMOS Cloud OS 14</p>
+                    <p id="vip-user-badge">VMOS Cloud OS 14 (VIP Mode)</p>
                 </div>
 
-                <!-- แอปพลิเคชันบนมือถือ -->
                 <div class="app-grid">
                     <div class="app-item" onclick="openApp('Google Play Store')">
                         <div class="app-icon store">▶</div>
@@ -127,7 +130,6 @@
 
         </div>
 
-        <!-- Sidebar Controls -->
         <div class="vmos-sidebar">
             <button class="side-btn" id="home-btn" title="Home">🏠</button>
             <button class="side-btn" id="back-btn" title="Back">↩️</button>
