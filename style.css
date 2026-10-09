@@ -14,7 +14,6 @@ body {
     min-height: 100vh;
 }
 
-/* Modal UI */
 .modal-backdrop {
     position: fixed;
     top: 0;
@@ -41,7 +40,37 @@ body {
 }
 
 .modal-card h2 { font-size: 22px; color: #fff; margin-bottom: 6px; }
-.modal-subtitle { font-size: 13px; color: #8a99ad; margin-bottom: 24px; }
+.modal-subtitle { font-size: 13px; color: #8a99ad; margin-bottom: 20px; }
+
+.vip-input-group {
+    background: #182232;
+    border: 1px solid #233147;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.vip-input-group label {
+    display: block;
+    font-size: 12px;
+    color: #94a3b8;
+    margin-bottom: 6px;
+}
+
+.vip-input-group input {
+    width: 100%;
+    padding: 10px;
+    background: #0d121c;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+}
+
+.vip-input-group input:focus { border-color: #2563eb; }
+.vip-msg { display: block; font-size: 11px; margin-top: 6px; font-weight: 600; }
 
 .plans-grid {
     display: grid;
@@ -121,7 +150,6 @@ body {
 
 .confirm-btn:hover { background: linear-gradient(135deg, #059669, #047857); }
 
-/* VMOS Container */
 .vmos-container {
     width: 380px;
     height: 780px;
@@ -175,7 +203,6 @@ body {
     color: white; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 600; cursor: pointer;
 }
 
-/* Boot Screen (ขึ้น Android) */
 .boot-screen {
     width: 100%;
     height: 100%;
@@ -191,7 +218,7 @@ body {
     font-size: 38px;
     font-weight: 300;
     letter-spacing: 4px;
-    color: #a4c639; /* สีเขียว Android */
+    color: #a4c639;
     margin-bottom: 30px;
     text-shadow: 0 0 15px rgba(164, 198, 57, 0.6);
 }
@@ -213,7 +240,6 @@ body {
 
 .boot-text { font-size: 12px; color: #888; }
 
-/* Android Home Screen */
 .android-home {
     width: 100%;
     height: 100%;
@@ -275,7 +301,6 @@ body {
 
 .app-item span { font-size: 11px; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
 
-/* Sidebar Controls */
 .vmos-sidebar {
     position: absolute;
     right: 12px;
@@ -301,3 +326,4 @@ body {
 
 .side-btn:hover { background: rgba(255, 255, 255, 0.1); color: #ffffff; }
 .divider { width: 16px; height: 1px; background: rgba(255, 255, 255, 0.15); }
+i
