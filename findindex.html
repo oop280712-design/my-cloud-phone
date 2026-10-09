@@ -3,42 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VMOS Cloud Phone & Instance Manager</title>
-    <link rel="stylesheet" href="style.css">
+    <title>VMOS Cloud Phone Container Manager</title>
+    <link rel="stylesheet" href="star.css">
 </head>
 <body>
     <!-- Modal เลือกแพ็กเกจ -->
     <div id="plan-modal" class="modal-backdrop">
         <div class="modal-card">
             <h2>☁️ เลือกแพ็กเกจ VMOS Cloud Phone</h2>
-            <p class="modal-subtitle">เลือกสเปกเครื่องจำลองสำหรับเริ่มใช้งานระบบ</p>
+            <p class="modal-subtitle">เลือกสเปกเครื่องจำลองสำหรับเริ่มใช้งานระบบ (สูงสุด 24 GB RAM)</p>
 
             <div class="plans-grid">
-                <!-- Plan 1: Starter High-Performance -->
-                <div class="plan-card active" onclick="selectPlan(this, 'Extreme Compute', '1,200 vCPU', '500 GB RAM')">
-                    <div class="plan-badge">แนะนำ / เริ่มต้น</div>
-                    <h3>Extreme Compute</h3>
-                    <div class="plan-price">฿1,200 <span>/เดือน</span></div>
+                <!-- Plan 1: Standard Performance -->
+                <div class="plan-card" onclick="selectPlan(this, 'Standard Cloud', '4 vCPU', '8 GB RAM')">
+                    <h3>Standard Cloud</h3>
+                    <div class="plan-price">฿350 <span>/เดือน</span></div>
                     <ul class="plan-specs">
-                        <li>⚡ <strong>1,200 Cores</strong> vCPU</li>
-                        <li>🧠 <strong>500 GB</strong> High-Speed RAM</li>
-                        <li>💾 2 TB NVMe SSD Storage</li>
-                        <li>📶 10 Gbps Dedicated Bandwidth</li>
-                        <li>📱 Android 13 Enterprise OS</li>
+                        <li>⚡ <strong>4 Cores</strong> vCPU</li>
+                        <li>🧠 <strong>8 GB</strong> LPDDR5X RAM</li>
+                        <li>💾 128 GB UFS 4.0 Storage</li>
+                        <li>📱 Android 13 Base OS</li>
                     </ul>
                     <button class="select-btn">เลือกแพ็กเกจนี้</button>
                 </div>
 
-                <!-- Plan 2: Enterprise Cluster -->
-                <div class="plan-card" onclick="selectPlan(this, 'Enterprise Cluster', '2,400 vCPU', '1 TB RAM')">
-                    <h3>Enterprise Cluster</h3>
-                    <div class="plan-price">฿2,500 <span>/เดือน</span></div>
+                <!-- Plan 2: Pro Gaming -->
+                <div class="plan-card" onclick="selectPlan(this, 'Pro Gaming', '8 vCPU', '16 GB RAM')">
+                    <h3>Pro Gaming</h3>
+                    <div class="plan-price">฿750 <span>/เดือน</span></div>
                     <ul class="plan-specs">
-                        <li>⚡ <strong>2,400 Cores</strong> vCPU</li>
-                        <li>🧠 <strong>1,000 GB (1 TB)</strong> RAM</li>
-                        <li>💾 5 TB NVMe SSD Storage</li>
-                        <li>📶 20 Gbps Dedicated Bandwidth</li>
-                        <li>📱 Android 13/14 Multi-Instance</li>
+                        <li>⚡ <strong>8 Cores</strong> vCPU</li>
+                        <li>🧠 <strong>16 GB</strong> LPDDR5X RAM</li>
+                        <li>💾 256 GB UFS 4.0 Storage</li>
+                        <li>📱 Android 14 High Performance</li>
+                    </ul>
+                    <button class="select-btn">เลือกแพ็กเกจนี้</button>
+                </div>
+
+                <!-- Plan 3: Max Ultra (24 GB RAM) -->
+                <div class="plan-card active" onclick="selectPlan(this, 'Ultra Extreme', '8 vCPU High-Clock', '24 GB RAM')">
+                    <div class="plan-badge">สูงสุด / แนะนำ</div>
+                    <h3>Ultra Extreme</h3>
+                    <div class="plan-price">฿1,200 <span>/เดือน</span></div>
+                    <ul class="plan-specs">
+                        <li>⚡ <strong>8 Cores</strong> Flagship vCPU</li>
+                        <li>🧠 <strong>24 GB</strong> High-Speed LPDDR5X RAM</li>
+                        <li>💾 512 GB NVMe Storage</li>
+                        <li>🛡️ Anti-Detect & Root Hide Built-in</li>
+                        <li>📱 Android 14 Unlocked OS</li>
                     </ul>
                     <button class="select-btn">เลือกแพ็กเกจนี้</button>
                 </div>
