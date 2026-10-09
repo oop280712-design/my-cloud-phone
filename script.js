@@ -1,7 +1,7 @@
 let currentSelectedPlan = {
-    name: "Extreme Compute",
-    cpu: "1,200 vCPU",
-    ram: "500 GB RAM"
+    name: "Ultra Extreme",
+    cpu: "8 vCPU",
+    ram: "24 GB RAM"
 };
 
 function selectPlan(cardElement, name, cpu, ram) {
@@ -19,7 +19,7 @@ document.getElementById('confirm-plan-btn').addEventListener('click', () => {
     badge.classList.add('active');
     
     document.getElementById('status-dot').className = 'status-dot green';
-    document.getElementById('ping').textContent = '12ms';
+    document.getElementById('ping').textContent = '14ms';
 
     document.getElementById('overlay-title').textContent = `${currentSelectedPlan.name} Ready`;
     document.getElementById('overlay-desc').textContent = `Specs: ${currentSelectedPlan.cpu} / ${currentSelectedPlan.ram}`;
