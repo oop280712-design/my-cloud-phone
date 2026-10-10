@@ -3,139 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VMOS Cloud Phone Container</title>
+    <title>VMOS Cloud - Professional Virtual Android System</title>
     <link rel="stylesheet" href="star.css">
 </head>
 <body>
 
-    <!-- 1. Modal เลือกและตรวจสอบสิทธิ์ VIP -->
+    <!-- Top Navigation Bar (VMOS Cloud Dashboard Header) -->
+    <header class="dashboard-nav">
+        <div class="nav-brand">
+            <span class="logo-icon">☁️</span>
+            <h1>VMOS <span class="highlight">CLOUD</span></h1>
+        </div>
+        <div class="user-profile-bar">
+            <span class="vip-tag" id="nav-vip-badge">Standard User</span>
+            <span class="user-email-display" id="nav-email-text">ยังไม่ได้เข้าสู่ระบบ</span>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="workspace">
+        
+        <!-- Sidebar Management Panel -->
+        <div class="management-sidebar">
+            <h3>🎛️ Instance Manager</h3>
+            <div class="instance-list">
+                <div class="instance-item active">
+                    <div class="inst-dot green"></div>
+                    <div class="inst-info">
+                        <span class="inst-name">Cloud-Phone-01</span>
+                        <span class="inst-spec">24 GB RAM / 8 vCPU</span>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="action-panel-btn" onclick="openModal()">➕ สร้าง / เปลี่ยนแพ็กเกจ</button>
+            <button class="action-panel-btn secondary" onclick="rebootInstance()">🔄 รีสตาร์ทเครื่อง</button>
+            <button class="action-panel-btn danger" onclick="powerOff()">⏻ ปิดระบบ</button>
+        </div>
+
+        <!-- Cloud Phone Viewport Container -->
+        <div class="phone-viewport-wrapper">
+            <div class="vmos-container">
+                
+                <!-- Android Status Bar -->
+                <div class="vmos-header">
+                    <div class="device-info">
+                        <span class="status-dot green"></span>
+                        <span class="device-name" id="display-plan-name">Ultra Extreme VIP</span>
+                    </div>
+                    <div class="ping-info">
+                        <span>📶 5G | <strong>12 ms</strong></span>
+                    </div>
+                </div>
+
+                <!-- Screen Area -->
+                <div class="vmos-screen">
+                    
+                    <!-- Boot Screen -->
+                    <div id="boot-screen" class="boot-screen" style="display: none;">
+                        <div class="android-logo">android</div>
+                        <div class="spinner"></div>
+                        <p class="boot-text" id="boot-status">Initializing Virtual Container...</p>
+                    </div>
+
+                    <!-- Android Home Screen -->
+                    <div id="android-home" class="android-home">
+                        <div class="phone-top-bar">
+                            <span id="phone-clock">12:00</span>
+                            <span class="icons">5G 🔋 100%</span>
+                        </div>
+
+                        <div class="widget-container">
+                            <h1 id="home-widget-time">12:00</h1>
+                            <p>พหัสบดี, 10 ตุลาคม</p>
+                        </div>
+
+                        <!-- App Grid -->
+                        <div class="app-grid">
+                            <div class="app-icon-wrapper" onclick="openApp('Google Play Store')">
+                                <div class="app-icon store">▶</div>
+                                <span>Play Store</span>
+                            </div>
+                            <div class="app-icon-wrapper" onclick="openApp('Chrome Browser')">
+                                <div class="app-icon chrome">🌐</div>
+                                <span>Chrome</span>
+                            </div>
+                            <div class="app-icon-wrapper" onclick="openApp('Game Center / ROV')">
+                                <div class="app-icon game">🎮</div>
+                                <span>Game Center</span>
+                            </div>
+                            <div class="app-icon-wrapper" onclick="openApp('File Manager')">
+                                <div class="app-icon files">📁</div>
+                                <span>Files</span>
+                            </div>
+                            <div class="app-icon-wrapper" onclick="openApp('Magisk Root')">
+                                <div class="app-icon root">🛡️</div>
+                                <span>Magisk</span>
+                            </div>
+                            <div class="app-icon-wrapper" onclick="openApp('VMOS Settings')">
+                                <div class="app-icon settings">⚙️</div>
+                                <span>Settings</span>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Bar -->
+                        <div class="android-navbar">
+                            <span onclick="triggerNav('recent')">⬛</span>
+                            <span onclick="triggerNav('home')">⌂</span>
+                            <span onclick="triggerNav('back')">‹</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Hardware Control Sidebar (Right) -->
+                <div class="vmos-sidebar">
+                    <button class="side-btn" onclick="triggerNav('home')" title="Home">🏠</button>
+                    <button class="side-btn" onclick="triggerNav('back')" title="Back">↩️</button>
+                    <button class="side-btn" onclick="triggerNav('recent')" title="Recents">📑</button>
+                    <div class="divider"></div>
+                    <button class="side-btn" onclick="openModal()" title="Settings">⚙️</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal เลือกแพ็กเกจ & กรอก VIP -->
     <div id="plan-modal" class="modal-backdrop">
         <div class="modal-card">
-            <h2>☁️ เลือกแพ็กเกจ VMOS Cloud Phone</h2>
-            <p class="modal-subtitle">กรอกอีเมลของคุณเพื่อตรวจสอบสิทธิ์พิเศษ VIP และเลือกสเปกเครื่องจำลอง</p>
+            <h2>☁️ VMOS Cloud Phone - Subscription Manager</h2>
+            <p class="modal-subtitle">กรอกอีเมลเพื่อตรวจสอบสิทธิ์ VIP หรือเลือกแพ็กเกจสมรรถนะสูง</p>
 
-            <!-- ช่องกรอกอีเมล VIP -->
             <div class="vip-input-group">
-                <label for="user-email">อีเมลบัญชีผู้ใช้:</label>
-                <input type="email" id="user-email" placeholder="ระบุอีเมลของคุณ เช่น oop280712@gmail.com" />
+                <label for="user-email">บัญชีอีเมลผู้ใช้งาน (VIP Verification):</label>
+                <input type="email" id="user-email" placeholder="เช่น oop280712@gmail.com หรือ sawat2823@gmail.com" />
                 <span id="vip-status-msg" class="vip-msg"></span>
             </div>
 
             <div class="plans-grid">
-                <!-- Plan 1 -->
                 <div class="plan-card" onclick="selectPlan(this, 'Standard Cloud', '4 vCPU', '8 GB RAM', '350')">
                     <h3>Standard Cloud</h3>
                     <div class="plan-price">฿350 <span>/เดือน</span></div>
                     <ul class="plan-specs">
-                        <li>⚡ <strong>4 Cores</strong> vCPU</li>
-                        <li>🧠 <strong>8 GB</strong> RAM</li>
+                        <li>⚡ 4 Cores vCPU</li>
+                        <li>🧠 8 GB RAM</li>
                         <li>💾 128 GB Storage</li>
-                        <li>📱 Android 13 OS</li>
                     </ul>
-                    <button class="select-btn">เลือกแพ็กเกจนี้</button>
+                    <button class="select-btn">เลือกแพ็กเกจ</button>
                 </div>
 
-                <!-- Plan 2 -->
                 <div class="plan-card" onclick="selectPlan(this, 'Pro Gaming', '8 vCPU', '16 GB RAM', '750')">
                     <h3>Pro Gaming</h3>
                     <div class="plan-price">฿750 <span>/เดือน</span></div>
                     <ul class="plan-specs">
-                        <li>⚡ <strong>8 Cores</strong> vCPU</li>
-                        <li>🧠 <strong>16 GB</strong> RAM</li>
+                        <li>⚡ 8 Cores vCPU</li>
+                        <li>🧠 16 GB RAM</li>
                         <li>💾 256 GB Storage</li>
-                        <li>📱 Android 14 OS</li>
                     </ul>
-                    <button class="select-btn">เลือกแพ็กเกจนี้</button>
+                    <button class="select-btn">เลือกแพ็กเกจ</button>
                 </div>
 
-                <!-- Plan 3 (VIP Free / Ultra) -->
                 <div class="plan-card active" onclick="selectPlan(this, 'Ultra Extreme VIP', '8 vCPU High-Clock', '24 GB RAM', '0')">
-                    <div class="plan-badge">VIP / แรงสุด (ฟรี)</div>
+                    <div class="plan-badge">แนะนำ / VIP ฟรี</div>
                     <h3>Ultra Extreme</h3>
                     <div class="plan-price" id="price-display">฿1,200 <span>/เดือน</span></div>
                     <ul class="plan-specs">
-                        <li>⚡ <strong>8 Cores</strong> Flagship vCPU</li>
-                        <li>🧠 <strong>24 GB</strong> RAM</li>
-                        <li>💾 512 GB NVMe Storage</li>
-                        <li>👑 VIP Unlimited Access</li>
+                        <li>⚡ Flagship 8 Cores</li>
+                        <li>🧠 24 GB LPDDR5X RAM</li>
+                        <li>🛡️ Root & Anti-Detect เปิดใช้งาน</li>
                     </ul>
-                    <button class="select-btn">เลือกแพ็กเกจนี้</button>
+                    <button class="select-btn">เลือกแพ็กเกจ</button>
                 </div>
             </div>
 
-            <button id="buy-btn" class="confirm-btn">💳 ยืนยันและเปิดใช้งานทันที</button>
+            <button id="buy-btn" class="confirm-btn" onclick="confirmSubscription()">🚀 บูตและเข้าสู่ระบบ Cloud Phone</button>
         </div>
     </div>
 
-    <!-- 2. กรอบ Cloud Phone -->
-    <div class="vmos-container">
-        <!-- Top Status Bar -->
-        <div class="vmos-header">
-            <div class="device-info">
-                <span class="status-dot" id="status-dot"></span>
-                <span class="device-name" id="display-plan-name">รอการเข้าสู่ระบบ...</span>
-                <span class="badge" id="display-specs">N/A</span>
-            </div>
-            <div class="ping-info">
-                <span>Latency: <strong id="ping">-- ms</strong></span>
-            </div>
-        </div>
-
-        <!-- Main Screen Area -->
-        <div class="vmos-screen">
-            
-            <div id="vmos-overlay" class="vmos-overlay">
-                <div class="cloud-icon">☁️</div>
-                <h3>ยังไม่ได้เชื่อมต่ออินสแตนซ์</h3>
-                <p>กรุณากรอกอีเมลและเลือกแพ็กเกจเพื่อเริ่มบูตระบบ Cloud Phone</p>
-                <button id="open-modal-btn" class="vmos-btn-primary">เปิดหน้าจัดการสเปก</button>
-            </div>
-
-            <div id="boot-screen" class="boot-screen" style="display: none;">
-                <div class="android-logo">android</div>
-                <div class="spinner"></div>
-                <p class="boot-text" id="boot-status">Verifying VIP Credentials...</p>
-            </div>
-
-            <div id="android-home" class="android-home" style="display: none;">
-                <div class="system-time-bar">
-                    <span id="android-clock">12:00</span>
-                    <span>5G 📶 100% 🔋</span>
-                </div>
-
-                <div class="widget-clock">
-                    <h1 id="main-time">12:00</h1>
-                    <p id="vip-user-badge">VMOS Cloud OS 14 (VIP Mode)</p>
-                </div>
-
-                <div class="app-grid">
-                    <div class="app-item" onclick="openApp('Google Play Store')">
-                        <div class="app-icon store">▶</div>
-                        <span>Play Store</span>
-                    </div>
-                    <div class="app-item" onclick="openApp('Chrome Browser')">
-                        <div class="app-icon chrome">🌐</div>
-                        <span>Chrome</span>
-                    </div>
-                    <div class="app-item" onclick="openApp('Game Center')">
-                        <div class="app-icon game">🎮</div>
-                        <span>Games</span>
-                    </div>
-                    <div class="app-item" onclick="openApp('System Settings')">
-                        <div class="app-icon settings">⚙️</div>
-                        <span>Settings</span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="vmos-sidebar">
-            <button class="side-btn" id="home-btn" title="Home">🏠</button>
-            <button class="side-btn" id="back-btn" title="Back">↩️</button>
-            <button class="side-btn" id="recent-btn" title="Recents">📑</button>
-            <div class="divider"></div>
-            <button class="side-btn" id="change-plan-btn" title="เปลี่ยนแพ็กเกจ">⚙️</button>
+    <!-- App Modal Popup (จำลองเปิดแอป) -->
+    <div id="app-modal" class="modal-backdrop" style="display: none;">
+        <div class="modal-card" style="max-width: 400px; text-align: center;">
+            <h3 id="app-title" style="color: #38bdf8; margin-bottom: 15px;">App Running</h3>
+            <p id="app-desc" style="color: #94a3b8; font-size: 14px; margin-bottom: 20px;">กำลังจำลองการทำงานภายในสภาพแวดล้อมคลาวด์...</p>
+            <button class="confirm-btn" onclick="closeAppModal()" style="padding: 8px 20px;">ปิดหน้าต่าง</button>
         </div>
     </div>
 
